@@ -8,11 +8,14 @@
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
+      
       "schematics": {
-        "@schematics/angular:component": {
-          "styleext": "scss"
-        }
-      },
+          "@schematics/angular:component": {
+            "style":"scss"
+          }
+          
+        },
+     
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -162,7 +165,7 @@
   "defaultProject": "argon-dashboard-angular",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "scss"
+      "style":"scss"
     }
   },
   "cli": {

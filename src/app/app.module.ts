@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -12,6 +12,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
+import { AreasProdutivasComponent } from './pages/areas-produtivas/areas-produtivas.component';
+import { ProdutosComponent } from './pages/produtos/produtos.component';
+import { FornecedoresComponent } from './pages/fornecedores/fornecedores.component';
+import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
+import { InventoriosComponent } from './pages/inventorios/inventorios.component';
+import { ConsumosComponent } from './pages/consumos/consumos.component';
 
 
 @NgModule({
@@ -19,6 +25,7 @@ import { ComponentsModule } from './components/components.module';
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     ComponentsModule,
     NgbModule,
     RouterModule,
@@ -27,7 +34,13 @@ import { ComponentsModule } from './components/components.module';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    AuthLayoutComponent
+    AuthLayoutComponent,
+    AreasProdutivasComponent,
+    ProdutosComponent,
+    FornecedoresComponent,
+    FuncionariosComponent,
+    InventoriosComponent,
+    ConsumosComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -7,7 +7,7 @@
     </button>
     <!-- Brand -->
     <a class="navbar-brand pt-0" routerLinkActive="active" [routerLink]="['/dashboard']">
-      <img src="./assets/img/brand/red.png" class="navbar-brand-img" alt="...">
+      <h1 class="navbar-brand-img gray">Agro</h1>
     </a>
     <!-- User -->
     <ul class="nav align-items-center d-md-none">
@@ -38,18 +38,6 @@
             <i class="ni ni-single-02"></i>
             <span>My profile</span>
           </a>
-          <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
-            <i class="ni ni-settings-gear-65"></i>
-            <span>Settings</span>
-          </a>
-          <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
-            <i class="ni ni-calendar-grid-58"></i>
-            <span>Activity</span>
-          </a>
-          <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
-            <i class="ni ni-support-16"></i>
-            <span>Support</span>
-          </a>
           <div class="dropdown-divider"></div>
           <a href="#!" class="dropdown-item">
             <i class="ni ni-user-run"></i>
@@ -65,7 +53,7 @@
         <div class="row">
           <div class="col-6 collapse-brand">
             <a  routerLinkActive="active" [routerLink]="['/dashboard']">
-              <img src="./assets/img/brand/blue.png">
+              <p>AGRO</p>
             </a>
           </div>
           <div class="col-6 collapse-close">
@@ -96,28 +84,40 @@
               </a>
           </li>
       </ul>
-      <!-- Divider -->
       <hr class="my-3">
-      <!-- Heading -->
-      <h6 class="navbar-heading text-muted">Documentation</h6>
-      <!-- Navigation -->
+      <!-- <h6 class="navbar-heading text-muted">Áreas Produtivas</h6> -->
       <ul class="navbar-nav mb-md-3">
         <li class="nav-item">
-          <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard-angular/documentation/tutorial">
-            <i class="ni ni-spaceship"></i> Getting started
+          <a  class="nav-link" routerLinkActive="active" routerLink="areas-produtivas">
+            <i  class="ni ni-spaceship"></i> Áreas Produtivas
           </a>
         </li>
+        <li  class="nav-item">
+          <a class="nav-link" href="#/documentation/colors">
+            <i  class="ni ni-palette"></i> Produtos </a>
+        </li>
+       
         <li class="nav-item">
-          <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard-angular/documentation/colors">
-            <i class="ni ni-palette"></i> Foundation
+          <a  class="nav-link" routerLinkActive="active" routerLink="areas-produtivas">
+            <i  class="ni ni-spaceship"></i> Atividades
           </a>
         </li>
+
         <li class="nav-item">
-          <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard-angular/documentation/alerts">
-            <i class="ni ni-ui-04"></i> Components
+          <a  class="nav-link" routerLinkActive="active" routerLink="areas-produtivas">
+            <i  class="ni ni-spaceship"></i> Funcionários
           </a>
         </li>
+
+        <li class="nav-item">
+          <a  class="nav-link" routerLinkActive="active" routerLink="areas-produtivas">
+            <i  class="ni ni-spaceship"></i> Fornecedores
+          </a>
+        </li>
+         
       </ul>
+  
+
     </div>
   </div>
 </nav>
