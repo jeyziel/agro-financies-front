@@ -6,6 +6,12 @@ import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { AreasProdutivasComponent } from 'src/app/pages/areas-produtivas/areas-produtivas.component';
+import { AtividadesComponent } from 'src/app/pages/atividades/atividades.component';
+import { CategoriasComponent } from 'src/app/pages/atividades/categorias/categorias.component';
+import { ProdutosComponent } from 'src/app/pages/produtos/produtos.component';
+import { CategoriasProdutosComponent } from 'src/app/pages/produtos/categorias-produtos/categorias-produtos.component';
+import { VendedoresComponent } from 'src/app/pages/fornecedores/vendedores/vendedores.component';
+import { FornecedoresComponent } from 'src/app/pages/fornecedores/fornecedores.component';
 
 export const AdminLayoutRoutes: Routes = [
     { 
@@ -16,6 +22,50 @@ export const AdminLayoutRoutes: Routes = [
         path: 'areas-produtivas',
         component: AreasProdutivasComponent
     },
+    {
+        path: 'atividades',
+       
+        children: [
+            {
+                path: '',
+                component: AtividadesComponent,
+            },
+            {
+                path: 'categorias',
+                component: CategoriasComponent
+            }
+        ]
+    },
+    {
+        path: 'produtos',
+        children: [
+            {
+                path: '',
+                component: ProdutosComponent
+            },
+            {
+                path: 'categorias',
+                component: CategoriasProdutosComponent
+            }
+
+        ]
+      
+    },
+    {
+        path: 'fornecedores',
+        children: [
+            {
+                path: '',
+                component: FornecedoresComponent
+            },
+            {
+                path: 'vendendores',
+                component: VendedoresComponent
+            }
+        ]
+      
+    },
+
     { 
         path: 'user-profile',   
         component: UserProfileComponent 

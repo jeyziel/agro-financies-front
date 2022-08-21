@@ -9,6 +9,9 @@
          
         </div>
       </div> -->
+          
+     <!-- Button trigger modal -->
+
     </div>
   </div>
   <!-- Page content -->
@@ -23,7 +26,7 @@
                     <h3 class="mb-0">Áreas Produtivas</h3>
                 </div>
                 <div class="col-4 text-right">
-                    <a class="btn btn-sm btn-primary" href="#!">Adicionar</a>
+                    <a class="btn btn-sm btn-primary" (click)="open(addAreaProdutiva)">Adicionar</a>
                 </div>
             </div>
             
@@ -63,8 +66,8 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" >Meta de Custo</a>
-                          <a class="dropdown-item" >Meta de Produtividade</a>
+                          <a class="dropdown-item" (click)="open(addMetaCusto)" >Meta de Custo</a>
+                          <a class="dropdown-item"  (click)="open(addMetaProdutividade)">Meta de Produtividade</a>
                           <a class="dropdown-item" >Editar</a>
                           <a class="dropdown-item" >Deletar</a>
                         </div>
@@ -78,5 +81,129 @@
         </div>
       </div>
     </div>
+
+    <!-- MODAIS-->
+
+    <ng-template #addAreaProdutiva let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Criar Áreas Produtivas</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Nome(*)</label>
+            <input class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
+          </div>
+
+          <div class="form-group">
+            <label for="input-variedade" class="form-control-label">Variedade(*)</label>
+            <select  class="form-control" id="input-variedade">
+              <option>Thompson</option>
+              
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Tamanho:</label>
+            <input class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Qtd. Plantas:</label>
+            <input class="form-control" type="number" onfocus="focused(this)" onfocusout="defocused(this)">
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Qtd. Linhas:</label>
+            <input class="form-control" type="number"  onfocus="focused(this)" onfocusout="defocused(this)">
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Espaçamento:</label>
+            <input class="form-control" type="text"  onfocus="focused(this)" onfocusout="defocused(this)">
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Data de Plantio:</label>
+            <input class="form-control" type="date"  onfocus="focused(this)" onfocusout="defocused(this)">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </ng-template>
+
+    <ng-template #addMetaCusto let-modal>
+
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Definir Meta - Custo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group">
+            <label for="input-variedade" class="form-control-label">Safras(*)</label>
+            <select  class="form-control" id="input-variedade">
+              <option>2022-01</option> 
+              <option>2022-02</option> 
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="input-variedade" class="form-control-label">Meta de Custo(*)</label>
+            <input class="form-control" type="text" placeholder="R$">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </ng-template>
+
+    <ng-template #addMetaProdutividade let-modal>
+
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Definir Meta - Produtividade</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group">
+            <label for="input-variedade" class="form-control-label">Safras(*)</label>
+            <select  class="form-control" id="input-variedade">
+              <option>2022-01</option> 
+              <option>2022-02</option> 
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="input-variedade" class="form-control-label">Meta de Produtividade(*)</label>
+            <input class="form-control" type="text" placeholder="R$">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </ng-template>
+
+    
+
   </div>
+
+ 
   

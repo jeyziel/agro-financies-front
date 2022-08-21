@@ -1,1 +1,112 @@
-<p>fornecedores works!</p>
+
+<div class="header bg-gradient-green pb-8 pt-5">
+    <div class="container-fluid">
+    </div>
+</div>
+  <!-- Page content -->
+  <div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header border-0">
+            <div class="row align-items-center">
+                <div class="col-7 text-left">
+                    <h3 class="mb-0">Fornecededores</h3>
+                </div>
+                <div class="col-4 text-right">
+                    <a class="btn btn-sm btn-primary" (click)="open(addFornecedores)">Adicionar</a>
+                </div>
+            </div>
+            
+          </div>
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Cnpj</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Address</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td>
+                      Rei do Adubo
+                    </td>
+                    <td>
+                      076.034.485-06
+                    </td>
+                    <td>
+                        74 981226151
+                    </td>
+                    <td>
+                      Rua da esmeralda, nº 84
+                    </td>
+                   
+                    <td class="text-right">
+                      <div ngbDropdown placement="bottom-right">
+                        <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                          <a class="dropdown-item" >Editar</a>
+                          <a class="dropdown-item" >Deletar</a>
+                        </div>
+                      </div>
+                    </td>
+                   
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAIS-->
+      <ng-template #addFornecedores let-modal>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Cadastrar Fornecedores</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+
+
+            <div class="form-group">
+                <label for="input-name" class="form-control-label">Nome(*)</label>
+                <input  id="input-name" class="form-control" type="text">
+            </div>
+
+            
+            <div class="form-group">
+                <label for="input-cnpj" class="form-control-label">CNPJ/CPF(*)</label>
+                <input id="input-cnpj" class="form-control" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="input-phone" class="form-control-label">Telefone</label>
+                <input id="input-phone" class="form-control" type="text">
+            </div>
+
+            <div class="form-group">
+              <label for="input-address" class="form-control-label">Endereço:</label>
+              <textarea class="form-control" rows="2"> </textarea>
+            </div>
+  
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+        </div>
+      </ng-template>
+
+
+    </div>
+</div>
+    

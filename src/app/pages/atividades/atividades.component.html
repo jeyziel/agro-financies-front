@@ -12,10 +12,10 @@
           <div class="card-header border-0">
             <div class="row align-items-center">
                 <div class="col-7 text-left">
-                    <h3 class="mb-0">Produtos</h3>
+                    <h3 class="mb-0">Atividades</h3>
                 </div>
                 <div class="col-4 text-right">
-                    <a class="btn btn-sm btn-primary" (click)="open(addProdutos)" >Adicionar</a>
+                    <a class="btn btn-sm btn-primary" (click)="open(addAtividades)">Adicionar</a>
                 </div>
             </div>
             
@@ -26,30 +26,26 @@
                 <tr>
                   <th scope="col">Nome</th>
                   <th scope="col">Categoria</th>
-                  <th scope="col">Função</th>
-                  <th scope="col">Qtd. Estoque</th>
-                  <th>Prod. alternativos</th>
+                  <th scope="col">Preço</th>
+                  <th scope="col">Criado em:</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                     <td>
-                      Esteco de BOI (KG)
+                      Raleio
                     </td>
                     <td>
-                       ADUBO
+                      Infraestrutura
                     </td>
                     <td>
-                      Adubar Planta
+                        R$ 500,00
                     </td>
                     <td>
-                        50
+                      15/08/2022
                     </td>
-                    <td>
-                        Adubar Planta asdasdsadasasdasdasdasdasasdasasssaas
-                    </td>
-                    
+                   
                     <td class="text-right">
                       <div ngbDropdown placement="bottom-right">
                         <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
@@ -70,10 +66,10 @@
       </div>
 
       <!-- MODAIS-->
-      <ng-template #addProdutos let-modal>
+      <ng-template #addAtividades let-modal>
 
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Cadastrar Produtos</h4>
+          <h4 class="modal-title" id="modal-basic-title">Cadastrar Atividades</h4>
           <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -86,32 +82,18 @@
                 <label for="input-name" class="form-control-label">Nome(*)</label>
                 <input  id="input-name" class="form-control" type="text">
             </div>
-
-            <div class="form-group">
-                <label for="input-unidade" class="form-control-label">Unidade(*)</label>
-                <select id="input-unidade" class="form-control">
-                  <option>KG</option> 
-                  <option>Und.</option>
-                  <option>CX</option> 
-                 
-                </select>
-              </div>
   
             <div class="form-group">
               <label for="input-categorias" class="form-control-label">Categorias(*)</label>
               <select id="input-categorias" class="form-control">
-                <option>Adubo</option> 
+                <option>Mão de Obra</option> 
+                <option>Infraestrutura</option> 
               </select>
             </div>
-
+  
             <div class="form-group">
-              <label for="input-funcao" class="form-control-label">Função</label>
-              <input id="input-funcao" class="form-control" type="text">
-            </div>
-
-            <div class="form-group">
-                <label for="input-alternativos" class="form-control-label">Prod. Alternativos</label>
-                <input id="input-alternativos" class="form-control" type="text">
+              <label for="input-preco-default" class="form-control-label">Preço Padrão</label>
+              <input id="input-preco-default" class="form-control" type="text" placeholder="R$">
             </div>
   
           </form>
@@ -119,10 +101,9 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
         </div>
-      </ng-template> 
+      </ng-template>
 
 
     </div>
 </div>
     
-

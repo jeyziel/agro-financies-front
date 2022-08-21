@@ -18,6 +18,10 @@ import { FornecedoresComponent } from './pages/fornecedores/fornecedores.compone
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
 import { InventoriosComponent } from './pages/inventorios/inventorios.component';
 import { ConsumosComponent } from './pages/consumos/consumos.component';
+import { AtividadesComponent } from './pages/atividades/atividades.component';
+import { CategoriasComponent } from './pages/atividades/categorias/categorias.component';
+import { CategoriasProdutosComponent } from './pages/produtos/categorias-produtos/categorias-produtos.component';
+import { VendedoresComponent } from './pages/fornecedores/vendedores/vendedores.component';
 
 
 @NgModule({
@@ -40,7 +44,11 @@ import { ConsumosComponent } from './pages/consumos/consumos.component';
     FornecedoresComponent,
     FuncionariosComponent,
     InventoriosComponent,
-    ConsumosComponent
+    ConsumosComponent,
+    AtividadesComponent,
+    CategoriasComponent,
+    CategoriasProdutosComponent,
+    VendedoresComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
