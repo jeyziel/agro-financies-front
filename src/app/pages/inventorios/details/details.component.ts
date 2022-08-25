@@ -3,26 +3,25 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-funcionarios',
-  templateUrl: './funcionarios.component.html',
-  styleUrls: ['./funcionarios.component.scss']
+  selector: 'app-details',
+  templateUrl: './details.component.html',
+  styleUrls: ['./details.component.scss']
 })
-export class FuncionariosComponent implements OnInit {
+export class DetailsComponent implements OnInit {
 
   closeResult = '';
-  public addFuncionarios : FormGroup;
+  public addProdutos : FormGroup;
 
   constructor(private modalService: NgbModal) { }
 
  
   ngOnInit(): void {
 
-    this.addFuncionarios = new FormGroup({
-      name: new FormControl(null, [Validators.required]),
-      matricula: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [Validators.nullValidator]),
-      fucntion: new FormControl(null, [Validators.nullValidator]),
-      address: new FormControl(null, [Validators.nullValidator])
+    this.addProdutos = new FormGroup({
+      product_id: new FormControl(null, [Validators.required]),
+      quantity: new FormControl(null, [Validators.required]),
+      weight: new FormControl(null, [Validators.nullValidator]),
+      unit_value: new FormControl(null, [Validators.required]),
     })
 
   }

@@ -22,6 +22,7 @@ import { AtividadesComponent } from './pages/atividades/atividades.component';
 import { CategoriasComponent } from './pages/atividades/categorias/categorias.component';
 import { CategoriasProdutosComponent } from './pages/produtos/categorias-produtos/categorias-produtos.component';
 import { VendedoresComponent } from './pages/fornecedores/vendedores/vendedores.component';
+import { DetailsComponent } from './pages/inventorios/details/details.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { VendedoresComponent } from './pages/fornecedores/vendedores/vendedores.
     AtividadesComponent,
     CategoriasComponent,
     CategoriasProdutosComponent,
-    VendedoresComponent
+    VendedoresComponent,
+    DetailsComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

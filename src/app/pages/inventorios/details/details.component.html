@@ -12,7 +12,7 @@
           <div class="card-header border-0">
             <div class="row align-items-center">
                 <div class="col-7 text-left">
-                    <h3 class="mb-0">Inventório</h3>
+                    <h3 class="mb-0">Inventório #184 - Produtos</h3>
                 </div>
                 <div class="col-4 text-right">
                     <a class="btn btn-sm btn-primary" (click)="open(addInventorios)">Adicionar</a>
@@ -24,30 +24,30 @@
             <table class="table align-items-center table-flush">
               <thead class="thead-light">
                 <tr>
-                  <th scope="col">Nº</th>
-                  <th scope="col">Fornecedor</th>
-                  <th scope="col">Pagamento</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Und. de Medida</th>
+                  <th scope="col">Valor Unitário</th>
+                  <th scope="col">Qtd.</th>
                   <th scope="col">Total</th>
-                  <th scope="col">Data de Pagamento</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                     <td>
-                      #1
+                      Esteco de BOI (20 KG) 
                     </td>
                     <td>
-                     Rei do Adubo
+                        KG
                     </td>
                     <td>
-                        À VISTA
+                        2
                     </td>
                     <td>
-                      R$ 800,00
+                      R$ 55,00
                     </td>
                     <td>
-                        21/01/2022
+                        R$ 110,00
                     </td>
                    
                     <td class="text-right">
@@ -73,7 +73,7 @@
        <ng-template #addInventorios let-modal>
 
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Cadastrar Inventório</h4>
+          <h4 class="modal-title" id="modal-basic-title">Incluir Produto</h4>
           <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -82,25 +82,26 @@
           <form>
 
             <div class="form-group">
-              <label for="input-fornecedores" class="form-control-label">Fornecedor(*)</label>
+              <label for="input-fornecedores" class="form-control-label">Produtos(*)</label>
               <select id="input-fornecedores" class="form-control">
-                <option>Rei do Adubo</option> 
-                <option>Principe do Esteco</option> 
-              </select>
-            </div>
-
-
-            <div class="form-group">
-              <label for="input-tipo-pagamento" class="form-control-label">Tipo de Pagamento(*)</label>
-              <select id="input-tipo-pagamento" class="form-control">
-                <option>À VISTA</option> 
-                <option>À PRAZO</option> 
+                <option>Esteco de BOI</option> 
+                <option>Esteco de Porco</option> 
               </select>
             </div>
 
             <div class="form-group">
-                <label for="input-data-pagamento" class="form-control-label">Data de Pagamento:</label>
-                <input id="input-data-pagamento" class="form-control" type="date">
+                <label for="input-padrao-embalagem" class="form-control-label">Padrão de Embalagem:</label>
+                <input id="input-padrao-embalagem" class="form-control" type="number">
+            </div>
+
+            <div class="form-group">
+                <label for="input-quantidade" class="form-control-label">Quantidade:</label>
+                <input id="input-quantidade" class="form-control" type="number">
+            </div>
+
+            <div class="form-group">
+                <label for="input-preco-unitario" class="form-control-label">Preço Unitário:</label>
+                <input id="input-preco-unitario" class="form-control" type="text">
             </div>
 
           </form>

@@ -1,1 +1,288 @@
-<p>consumos works!</p>
+
+<div class="header bg-gradient-green pb-8 pt-5">
+    <div class="container-fluid">
+    </div>
+</div>
+  <!-- Page content -->
+  <div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header border-1">
+            <div class="row align-items-center">
+                <div class="col-7 text-left">
+                    <h3 class="mb-0">Consumos de Produtos</h3>
+                </div>
+                <div class="col-4 text-right">
+                    <a class="btn btn-sm btn-primary" (click)="open(addConsumoProduto)">Adicionar</a>
+                </div>
+            </div>
+            
+          </div>
+
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Nº</th>
+                  <th scope="col">Fornecedor</th>
+                  <th scope="col">Pagamento</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Data de Pagamento</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td>
+                      #1
+                    </td>
+                    <td>
+                     Rei do Adubo
+                    </td>
+                    <td>
+                        À VISTA
+                    </td>
+                    <td>
+                      R$ 800,00
+                    </td>
+                    <td>
+                        21/01/2022
+                    </td>
+                   
+                    <td class="text-right">
+                      <div ngbDropdown placement="bottom-right">
+                        <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                          <a class="dropdown-item" >Editar</a>
+                          <a class="dropdown-item" >Deletar</a>
+                        </div>
+                      </div>
+                    </td>
+                   
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col">
+          <div class="card bg-default shadow">
+            <div class="card-header bg-transparent border-0">
+              <div class="row align-items-center">
+                  <div class="col-7 text-left">
+                      <h3 class="mb-0 text-white">Consumos de Atividades</h3>
+                  </div>
+                  <div class="col-4 text-right">
+                      <a class="btn btn-sm btn-primary" (click)="open(addConsumoAtividades)">Adicionar</a>
+                  </div>
+              </div>
+              
+            </div>
+  
+            <div class="table-responsive">
+              <table class="table align-items-center table-dark table-flush">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Nº</th>
+                    <th scope="col">Fornecedor</th>
+                    <th scope="col">Pagamento</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Data de Pagamento</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                      <td>
+                        #1
+                      </td>
+                      <td>
+                       Rei do Adubo
+                      </td>
+                      <td>
+                          À VISTA
+                      </td>
+                      <td>
+                        R$ 800,00
+                      </td>
+                      <td>
+                          21/01/2022
+                      </td>
+                     
+                      <td class="text-right">
+                        <div ngbDropdown placement="bottom-right">
+                          <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
+                            <i class="fas fa-ellipsis-v"></i>
+                          </a>
+                          <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                            <a class="dropdown-item" >Editar</a>
+                            <a class="dropdown-item" >Deletar</a>
+                          </div>
+                        </div>
+                      </td>
+                     
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
+    <!-- MODAIS-->
+    <ng-template #addConsumoProduto let-modal>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Consumo de Produto</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+
+            <div class="form-group">
+              <label for="input-safra" class="form-control-label">Safra(*)</label>
+              <select id="input-safra" class="form-control">
+                <option>01-2022</option> 
+                <option>02-2022</option> 
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="input-produto" class="form-control-label">Produto(*)</label>
+              <select id="input-produto" class="form-control">
+                <option>Esteco de BOI</option> 
+                <option>Esteco Prime</option> 
+              </select>
+            </div>
+
+
+            <div class="form-group">
+              <label for="input-area" class="form-control-label">Área Produtiva(*)</label>
+              <select id="input-area" class="form-control">
+                <option>A1</option> 
+                <option>A2</option> 
+              </select>
+            </div>
+
+
+            <div class="form-group">
+              <label for="input-colaborador" class="form-control-label">Colaborador(*)</label>
+              <select id="input-colaborador" class="form-control">
+                <option>Jeyziel Gama</option> 
+                <option>Tales Seabra</option> 
+              </select>
+            </div>
+
+            <div class="form-group">
+                <label for="input-data-consumo" class="form-control-label">Data de Consumo:</label>
+                <input id="input-data-consumo" class="form-control" type="date">
+            </div>
+
+            
+            <div class="form-group">
+              <label for="input-address" class="form-control-label">Observação:</label>
+              <textarea class="form-control" rows="2"> </textarea>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+        </div>
+    </ng-template>
+
+    <ng-template #addConsumoAtividades let-modal>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Consumo de Atividades</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+
+            <div class="form-group">
+              <label for="input-safra" class="form-control-label">Safra(*)</label>
+              <select id="input-safra" class="form-control">
+                <option>01-2022</option> 
+                <option>02-2022</option> 
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="input-produto" class="form-control-label">Atividade(*)</label>
+              <select id="input-produto" class="form-control">
+                <option>Raleio</option> 
+                <option>Salário</option> 
+              </select>
+            </div>
+
+
+            <div class="form-group">
+              <label for="input-area" class="form-control-label">Área Produtiva(*)</label>
+              <select id="input-area" class="form-control">
+                <option>A1</option> 
+                <option>A2</option> 
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="input-colaborador" class="form-control-label">Unidade(*)</label>
+              <select id="input-colaborador" class="form-control">
+                <option>Geral</option> 
+                <option>Linha</option> 
+                <option>Válvula</option> 
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="input-quantidade" class="form-control-label">Quantidade:</label>
+              <input id="input-quantidade" class="form-control" type="number">
+            </div>
+
+           
+            <div class="form-group">
+              <label for="input-colaborador" class="form-control-label">Colaborador(*)</label>
+              <select id="input-colaborador" class="form-control">
+                <option>Jeyziel Gama</option> 
+                <option>Tales Seabra</option> 
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="input-preco" class="form-control-label">Preço(*):</label>
+              <input id="input-preco" class="form-control" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="input-data-consumo" class="form-control-label">Data da Atividade:</label>
+                <input id="input-data-consumo" class="form-control" type="date">
+            </div>
+
+            
+            <div class="form-group">
+              <label for="input-address" class="form-control-label">Observação:</label>
+              <textarea class="form-control" rows="2"> </textarea>
+            </div>
+
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+        </div>
+    </ng-template>
+
+
+</div>

@@ -12,6 +12,10 @@ import { ProdutosComponent } from 'src/app/pages/produtos/produtos.component';
 import { CategoriasProdutosComponent } from 'src/app/pages/produtos/categorias-produtos/categorias-produtos.component';
 import { VendedoresComponent } from 'src/app/pages/fornecedores/vendedores/vendedores.component';
 import { FornecedoresComponent } from 'src/app/pages/fornecedores/fornecedores.component';
+import { FuncionariosComponent } from 'src/app/pages/funcionarios/funcionarios.component';
+import { InventoriosComponent } from 'src/app/pages/inventorios/inventorios.component';
+import { DetailsComponent } from 'src/app/pages/inventorios/details/details.component';
+import { ConsumosComponent } from 'src/app/pages/consumos/consumos.component';
 
 export const AdminLayoutRoutes: Routes = [
     { 
@@ -24,7 +28,6 @@ export const AdminLayoutRoutes: Routes = [
     },
     {
         path: 'atividades',
-       
         children: [
             {
                 path: '',
@@ -65,7 +68,35 @@ export const AdminLayoutRoutes: Routes = [
         ]
       
     },
-
+    { 
+        path: 'funcionarios',   
+        component: FuncionariosComponent 
+    },
+    { 
+        path: 'inventorio', 
+        children: [
+            {
+                path: '',
+                component: InventoriosComponent
+            },
+            {
+                path: 'details',
+                component: DetailsComponent
+                
+            }
+        ]  
+        
+    },
+    { 
+        path: 'consumos', 
+        children: [
+            {
+                path: '',
+                component: ConsumosComponent
+            },  
+        ]  
+        
+    },
     { 
         path: 'user-profile',   
         component: UserProfileComponent 

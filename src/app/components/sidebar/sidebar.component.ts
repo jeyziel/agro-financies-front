@@ -21,8 +21,8 @@ export const ROUTES: RouteInfo[] = [
 
 export const ROUTES: RouteInfo[] = [
   { path: '/dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
-  { path: '/inventory', title: 'Inventório',  icon: 'ni-basket text-primary', class: '' },
-  { path: '/consumption', title: 'Consumo',  icon: 'ni-basket text-primary', class: '' },
+  { path: '/inventorio', title: 'Inventório',  icon: 'ni-basket text-primary', class: '' },
+  { path: '/consumos', title: 'Consumo',  icon: 'ni-basket text-primary', class: '' },
   
  
 ];
