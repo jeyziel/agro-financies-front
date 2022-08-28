@@ -23,6 +23,7 @@ import { CategoriasComponent } from './pages/atividades/categorias/categorias.co
 import { CategoriasProdutosComponent } from './pages/produtos/categorias-produtos/categorias-produtos.component';
 import { VendedoresComponent } from './pages/fornecedores/vendedores/vendedores.component';
 import { DetailsComponent } from './pages/inventorios/details/details.component';
+import {NgChartsModule} from 'ng2-charts';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { DetailsComponent } from './pages/inventorios/details/details.component'
     ComponentsModule,
     NgbModule,
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgChartsModule
   ],
   declarations: [
     AppComponent,

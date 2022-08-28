@@ -5,22 +5,50 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ItensImpactoComponent } from './dashboard/tables/itens-impacto/itens-impacto.component';
+import { CustoAreaComponent } from './dashboard/tables/custo-area/custo-area.component';
+import { CustoCategoriasComponent } from './dashboard/tables/custo-categorias/custo-categorias.component';
+import { InformacoesGeraisComponent } from './dashboard/tables/informacoes-gerais/informacoes-gerais.component';
+import { InformacoesDetalhadasComponent } from './dashboard/tables/informacoes-detalhadas/informacoes-detalhadas.component';
+import { BarcodeComponent } from './charts/barcode/barcode.component';
+import { PieComponent } from './charts/pie/pie.component';
+import { DoughnutComponent } from './charts/doughnut/doughnut.component';
+import {NgChartsModule} from 'ng2-charts';
+
+
+
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    NgbModule
+    NgbModule,
+    NgChartsModule
   ],
   declarations: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    ItensImpactoComponent,
+    CustoAreaComponent,
+    CustoCategoriasComponent,
+    InformacoesGeraisComponent,
+    InformacoesDetalhadasComponent,
+    BarcodeComponent,
+    PieComponent,
+    DoughnutComponent
   ],
-  exports: [
-    FooterComponent,
-    NavbarComponent,
-    SidebarComponent
-  ]
+    exports: [
+        FooterComponent,
+        NavbarComponent,
+        SidebarComponent,
+        ItensImpactoComponent,
+        CustoAreaComponent,
+        CustoCategoriasComponent,
+        InformacoesGeraisComponent,
+        InformacoesDetalhadasComponent,
+        PieComponent,
+        BarcodeComponent
+    ]
 })
 export class ComponentsModule { }

@@ -13,18 +13,20 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { InterceptorModule } from 'src/app/interceptors/interceptor.module';
+import {ComponentsModule} from '../../components/components.module';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(AdminLayoutRoutes),
-    FormsModule,
-    HttpClientModule,
-    NgbModule,
-    ClipboardModule,
-    InterceptorModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(AdminLayoutRoutes),
+        FormsModule,
+        HttpClientModule,
+        NgbModule,
+        ClipboardModule,
+        InterceptorModule,
+        ComponentsModule
+    ],
   declarations: [
     DashboardComponent,
     UserProfileComponent,
