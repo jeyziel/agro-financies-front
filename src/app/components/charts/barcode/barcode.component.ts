@@ -11,7 +11,7 @@ export class BarcodeComponent implements OnInit {
   public barChartOptions: ChartOptions = {
     responsive: true,
   };
-  public barChartLabels  = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels  = ['JAN/22', 'FEV/22', 'MAR/22', 'ABR/22', 'MAI/22', 'JUN/22', 'JUL/22'];
   public barChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];

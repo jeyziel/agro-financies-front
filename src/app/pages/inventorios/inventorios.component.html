@@ -18,7 +18,7 @@
                     <a class="btn btn-sm btn-primary" (click)="open(addInventorios)">Adicionar</a>
                 </div>
             </div>
-            
+
           </div>
           <div class="table-responsive">
             <table class="table align-items-center table-flush">
@@ -33,23 +33,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                    <td>
-                      #1
-                    </td>
-                    <td>
-                     Rei do Adubo
-                    </td>
-                    <td>
-                        À VISTA
-                    </td>
-                    <td>
-                      R$ 800,00
-                    </td>
-                    <td>
-                        21/01/2022
-                    </td>
-                   
+                <tr *ngFor="let inventory of inventories">
+                    <td (click)="goToDetail(inventory)"> # {{ inventory?.id }}</td>
+                    <td (click)="goToDetail(inventory)"> {{ inventory?.provider_name  }} </td>
+                    <td (click)="goToDetail(inventory)"> {{ inventory?.payment_type_name  }}</td>
+                    <td (click)="goToDetail(inventory)"> {{ inventory?.total }}</td>
+                    <td (click)="goToDetail(inventory)"> {{ inventory?.paid_at | date: 'dd/MM/yyyy' }} </td>
+
                     <td class="text-right">
                       <div ngbDropdown placement="bottom-right">
                         <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
@@ -61,7 +51,7 @@
                         </div>
                       </div>
                     </td>
-                   
+
                 </tr>
               </tbody>
             </table>
@@ -79,34 +69,42 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form [formGroup]="addInventoriosForm"  >
+
+            <div class="form-group">
+              <label for="input-number" class="form-control-label">Número:</label>
+              <input formControlName="number" id="input-number" class="form-control" type="text">
+            </div>
 
             <div class="form-group">
               <label for="input-fornecedores" class="form-control-label">Fornecedor(*)</label>
-              <select id="input-fornecedores" class="form-control">
-                <option>Rei do Adubo</option> 
-                <option>Principe do Esteco</option> 
+              <select formControlName="provider_id" id="input-fornecedores" class="form-control">
+                <option *ngFor="let provider of providers" [value]="provider.id">
+                  {{ provider.name }}
+                </option>
+
               </select>
             </div>
 
 
             <div class="form-group">
               <label for="input-tipo-pagamento" class="form-control-label">Tipo de Pagamento(*)</label>
-              <select id="input-tipo-pagamento" class="form-control">
-                <option>À VISTA</option> 
-                <option>À PRAZO</option> 
+              <select formControlName="payment_type_id" id="input-tipo-pagamento" class="form-control">
+                <option *ngFor="let paymentType of paymentTypes" [value]="paymentType.id">
+                  {{ paymentType.name }}
+                </option>
               </select>
             </div>
 
             <div class="form-group">
                 <label for="input-data-pagamento" class="form-control-label">Data de Pagamento:</label>
-                <input id="input-data-pagamento" class="form-control" type="date">
+                <input formControlName="paid_at" id="input-data-pagamento" class="form-control" type="date">
             </div>
 
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+          <button (click)="create()" [disabled]="addInventoriosForm.invalid" type="button" class="btn btn-outline-dark">Criar</button>
         </div>
       </ng-template>
 

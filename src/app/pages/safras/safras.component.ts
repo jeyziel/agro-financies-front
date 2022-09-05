@@ -1,39 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  selector: 'app-safras',
+  templateUrl: './safras.component.html',
+  styleUrls: ['./safras.component.scss']
 })
-export class DetailsComponent implements OnInit {
+export class SafrasComponent implements OnInit {
 
   closeResult = '';
-  public addProdutos : FormGroup;
-  private idIventory
+  public addSafras : FormGroup;
 
-  constructor(private modalService: NgbModal, private route: ActivatedRoute) { }
+  constructor(private modalService: NgbModal) { }
 
  
   ngOnInit(): void {
 
-    this.addProdutos = new FormGroup({
-      product_id: new FormControl(null, [Validators.required]),
-      quantity: new FormControl(null, [Validators.required]),
-      weight: new FormControl(null, [Validators.nullValidator]),
-      unit_value: new FormControl(null, [Validators.required]),
+    this.addSafras = new FormGroup({
+      name: new FormControl(null, [Validators.required]),
+      observation: new FormControl(null, [Validators.nullValidator]) 
     })
 
-    this.idIventory = this.route.snapshot.params['id'];
-
-  }
-
-  addProducts(){
-
-
-    
   }
 
   open(content) {

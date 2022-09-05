@@ -12,13 +12,17 @@
           <div class="card-header border-0">
             <div class="row align-items-center">
                 <div class="col-7 text-left">
-                    <h3 class="mb-0">Produtos</h3>
+                    <h3 class="mb-0">LISTA DE PRODUTOS</h3>
                 </div>
                 <div class="col-4 text-right">
                     <a class="btn btn-sm btn-primary" (click)="open(addProdutos)" >Adicionar</a>
+                    <a class="btn btn-sm btn-primary" [routerLink]="['/produtos/categorias']" >Categorias</a>
                 </div>
+
+
+
             </div>
-            
+
           </div>
           <div class="table-responsive">
             <table class="table align-items-center table-flush">
@@ -28,40 +32,40 @@
                   <th scope="col">Categoria</th>
                   <th scope="col">Função</th>
                   <th scope="col">Qtd. Estoque</th>
-                  <th>Prod. alternativos</th>
+                  <th>Prod. Alternativos</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let product of products">
                     <td>
-                      Esteco de BOI (KG)
+                      {{ product?.name }} ({{ product?.unit_name }})
                     </td>
                     <td>
-                       ADUBO
+                       {{ product?.category_name }}
                     </td>
                     <td>
-                      Adubar Planta
+                      {{ product?.function }}
                     </td>
                     <td>
-                        50
+                      {{ product?.quantidade_estoque }}
                     </td>
                     <td>
-                        Adubar Planta asdasdsadasasdasdasdasdasasdasasssaas
+                      {{ product?.alternative_products }}
                     </td>
-                    
+
                     <td class="text-right">
                       <div ngbDropdown placement="bottom-right">
                         <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" >Editar</a>
-                          <a class="dropdown-item" >Deletar</a>
+                          <a class="dropdown-item" (click)="onEditProdutos(product); open(editProdutos);"  >Editar</a>
+                          <a class="dropdown-item" (click)="delete(product?.id)" >Deletar</a>
                         </div>
                       </div>
                     </td>
-                   
+
                 </tr>
               </tbody>
             </table>
@@ -79,50 +83,115 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form [formGroup]="addProdutosForm">
 
 
             <div class="form-group">
                 <label for="input-name" class="form-control-label">Nome(*)</label>
-                <input  id="input-name" class="form-control" type="text">
+                <input
+                  formControlName="name"
+                  id="input-name"
+                  class="form-control"
+                  type="text"
+                  [ngClass]="{ 'is-invalid': submittedAdd && addForm.name.errors }"
+                >
+                <div *ngIf="submittedAdd && addForm.name.errors" class="invalid-feedback">
+                  <div>O Nome é obrigatório</div>
+                </div>
+
             </div>
 
             <div class="form-group">
                 <label for="input-unidade" class="form-control-label">Unidade(*)</label>
-                <select id="input-unidade" class="form-control">
-                  <option>KG</option> 
-                  <option>Und.</option>
-                  <option>CX</option> 
-                 
+                <select formControlName="product_unit_id" id="input-unidade" class="form-control">
+                  <option  *ngFor="let unit of units" [value]="unit.id">{{ unit.name }}</option>
+
                 </select>
               </div>
-  
+
             <div class="form-group">
               <label for="input-categorias" class="form-control-label">Categorias(*)</label>
-              <select id="input-categorias" class="form-control">
-                <option>Adubo</option> 
+              <select formControlName="product_category_id" id="input-categorias" class="form-control">
+                <option *ngFor="let category of categories" [value]="category.id" >{{ category.name }}</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="input-funcao" class="form-control-label">Função</label>
-              <input id="input-funcao" class="form-control" type="text">
+              <input formControlName="function" id="input-funcao" class="form-control" type="text">
             </div>
 
             <div class="form-group">
                 <label for="input-alternativos" class="form-control-label">Prod. Alternativos</label>
-                <input id="input-alternativos" class="form-control" type="text">
+                <input formControlName="alternative_products" id="input-alternativos" class="form-control" type="text">
             </div>
-  
+
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="create()">Criar</button>
         </div>
-      </ng-template> 
+      </ng-template>
+
+      <ng-template #editProdutos let-modal>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Editar Produto</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editProdutosForm">
+
+
+            <div class="form-group">
+                <label for="input-name" class="form-control-label">Nome(*)</label>
+                <input
+                  formControlName="name"
+                  id="input-name"
+                  class="form-control"
+                  type="text"
+                  [ngClass]="{ 'is-invalid': submittedAdd && addForm.name.errors }"
+                >
+                <div *ngIf="submittedAdd && addForm.name.errors" class="invalid-feedback">
+                  <div>O Nome é obrigatório</div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="input-unidade" class="form-control-label">Unidade(*)</label>
+                <select formControlName="product_unit_id" id="input-unidade" class="form-control">
+                  <option  *ngFor="let unit of units" [value]="unit.id">{{ unit.name }}</option>
+
+                </select>
+              </div>
+
+            <div class="form-group">
+              <label for="input-categorias" class="form-control-label">Categorias(*)</label>
+              <select formControlName="product_category_id" id="input-categorias" class="form-control">
+                <option *ngFor="let category of categories" [value]="category.id" >{{ category.name }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="input-funcao" class="form-control-label">Função</label>
+              <input formControlName="function" id="input-funcao" class="form-control" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="input-alternativos" class="form-control-label">Prod. Alternativos</label>
+                <input formControlName="alternative_products" id="input-alternativos" class="form-control" type="text">
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="update()">EDITAR</button>
+        </div>
+      </ng-template>
 
 
     </div>
 </div>
-    
-

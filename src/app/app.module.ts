@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -24,6 +24,9 @@ import { CategoriasProdutosComponent } from './pages/produtos/categorias-produto
 import { VendedoresComponent } from './pages/fornecedores/vendedores/vendedores.component';
 import { DetailsComponent } from './pages/inventorios/details/details.component';
 import {NgChartsModule} from 'ng2-charts';
+import { SafrasComponent } from './pages/safras/safras.component';
+import {Interceptor} from './interceptors/interceptor.service';
+import {InterceptorModule} from './interceptors/interceptor.module';
 
 
 @NgModule({
@@ -36,6 +39,7 @@ import {NgChartsModule} from 'ng2-charts';
     NgbModule,
     RouterModule,
     AppRoutingModule,
+    InterceptorModule,
     NgChartsModule
   ],
   declarations: [
@@ -52,9 +56,12 @@ import {NgChartsModule} from 'ng2-charts';
     CategoriasComponent,
     CategoriasProdutosComponent,
     VendedoresComponent,
-    DetailsComponent
+    DetailsComponent,
+    SafrasComponent
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

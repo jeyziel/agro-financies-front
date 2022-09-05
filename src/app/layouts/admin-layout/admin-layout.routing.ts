@@ -16,11 +16,17 @@ import { FuncionariosComponent } from 'src/app/pages/funcionarios/funcionarios.c
 import { InventoriosComponent } from 'src/app/pages/inventorios/inventorios.component';
 import { DetailsComponent } from 'src/app/pages/inventorios/details/details.component';
 import { ConsumosComponent } from 'src/app/pages/consumos/consumos.component';
+import { SafrasComponent } from 'src/app/pages/safras/safras.component';
 
 export const AdminLayoutRoutes: Routes = [
-    { 
-        path: 'dashboard',      
-        component: DashboardComponent 
+    {
+        path: 'dashboard',
+        component: DashboardComponent
+    },
+    {
+        path: 'safras',
+        component: SafrasComponent
+
     },
     {
         path: 'areas-produtivas',
@@ -52,7 +58,7 @@ export const AdminLayoutRoutes: Routes = [
             }
 
         ]
-      
+
     },
     {
         path: 'fornecedores',
@@ -66,51 +72,51 @@ export const AdminLayoutRoutes: Routes = [
                 component: VendedoresComponent
             }
         ]
-      
+
     },
-    { 
-        path: 'funcionarios',   
-        component: FuncionariosComponent 
+    {
+        path: 'funcionarios',
+        component: FuncionariosComponent
     },
-    { 
-        path: 'inventorio', 
+    {
+        path: 'inventorio',
         children: [
             {
                 path: '',
                 component: InventoriosComponent
             },
             {
-                path: 'details',
+                path: ':id',
                 component: DetailsComponent
-                
+
             }
-        ]  
-        
+        ]
+
     },
-    { 
-        path: 'consumos', 
+    {
+        path: 'consumos',
         children: [
             {
                 path: '',
                 component: ConsumosComponent
-            },  
-        ]  
-        
+            },
+        ]
+
     },
-    { 
-        path: 'user-profile',   
-        component: UserProfileComponent 
+    {
+        path: 'user-profile',
+        component: UserProfileComponent
     },
-    { 
-        path: 'tables',         
-        component: TablesComponent 
+    {
+        path: 'tables',
+        component: TablesComponent
     },
-    { 
-        path: 'icons',          
-        component: IconsComponent 
+    {
+        path: 'icons',
+        component: IconsComponent
     },
-    { 
-        path: 'maps',           
-        component: MapsComponent 
+    {
+        path: 'maps',
+        component: MapsComponent
     }
 ];

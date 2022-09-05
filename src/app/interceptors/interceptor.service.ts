@@ -9,14 +9,16 @@ import { AuthService } from '../services/auth.service';
 @Injectable()
 export class Interceptor implements HttpInterceptor {
 
- 
+
     constructor(private authService : AuthService){
 
     }
 
-    
+
 
     intercept( request: HttpRequest<any>, next: HttpHandler ): Observable<HttpEvent<any>> {
+
+        console.log('entrei no interceptor')
 
         const token = this.authService.get('token')
 

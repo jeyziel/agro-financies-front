@@ -31,19 +31,22 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr *ngFor="let category of categories">
   
                       <td>
-                        Adubo
+                        {{ category.name }}
                       </td>
-  
+                      
+
                       <td>
-                        Categoria de adubos
+                        {{ category.description ?? '-' }}
                       </td>
+
                      
                       <td>
-                        15/08/2022
+                        {{ category.created_at | date: 'dd/MM/YYYY' }}
                       </td>
+                     
                      
                       <td class="text-right">
                         <div ngbDropdown placement="bottom-right">
@@ -75,23 +78,31 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <form>
+                  <form [formGroup]="addCategoriasForm">
         
                     <div class="form-group">
-                        <label for="input-name" class="form-control-label">Nome(*)</label>
-                        <input  id="input-name" class="form-control" type="text">
+                        <label   for="input-name" class="form-control-label">Nome(*)</label>
+                        <input 
+                          formControlName="name" 
+                          id="input-name" 
+                          [ngClass]="{ 'is-invalid': submittedAdd && addForm.name.errors }"
+                          class="form-control" 
+                          type="text">
+                          <div *ngIf="submittedAdd && addForm.name.errors" class="invalid-feedback">
+                            <div>O Nome é obrigatório</div>
+                          </div>
                     </div>
         
                     <div class="form-group">
                         <label for="input-name" class="form-control-label">Descrição</label>
-                        <input  id="input-name" class="form-control" type="text">
+                        <input  formControlName="description" id="input-name" class="form-control" type="text">
                     </div>
           
                 
                   </form>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+                  <button (click)="create()"  type="button" class="btn btn-outline-dark">Criar</button>
                 </div>
         </ng-template>
 
