@@ -1,6 +1,29 @@
 
 <div class="header bg-gradient-green pb-8 pt-5">
     <div class="container-fluid">
+
+      <div class="card sumario border shadow mt-4">
+      
+        <div class="card-body mt-0 pt-1">
+          <div class="row">
+            <div class="col-6">
+              <div>
+                <p class="sumario-text"><b>Nota: </b>{{ inventories?.number }}</p>
+                <p class="sumario-text"><b>Fornecedor:</b> {{ inventories?.provider_name }}</p>
+                <p class="sumario-text"><b>Valor Total:</b> {{ inventories?.total | currency:'BRL':true }}</p>
+                <p class="sumario-text"><b>Forma de Pagamento:</b> {{ inventories?.payment_type }}</p>
+                <p class="sumario-text"><b>Data de Pagamento:</b> {{ inventories?.paid_at | date: 'dd/MM/yyyy' }}</p>
+              </div>
+            
+            </div>
+      
+           
+      
+          </div>
+      
+        </div>
+      </div>
+      
     </div>
 </div>
   <!-- Page content -->
@@ -8,11 +31,11 @@
     <!-- Table -->
     <div class="row">
       <div class="col">
-        <div class="card shadow">
+        <div class="card  list shadow">
           <div class="card-header border-0">
             <div class="row align-items-center">
                 <div class="col-7 text-left">
-                    <h3 class="mb-0">Inventório #184 - Produtos</h3>
+                    <h3 class="mb-0">Produtos Adicionados:</h3>
                 </div>
                 <div class="col-4 text-right">
                     <a class="btn btn-sm btn-primary" (click)="open(addInventorios)">Adicionar</a>
@@ -25,7 +48,7 @@
               <thead class="thead-light">
                 <tr>
                   <th scope="col">Nome</th>
-                  <th scope="col">Und. de Medida</th>
+                  <th scope="col">Padrão de Embalagem</th>
                   <th scope="col">Valor Unitário</th>
                   <th scope="col">Qtd.</th>
                   <th scope="col">Total</th>
@@ -33,21 +56,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let product of inventories?.products">
                     <td>
-                      Esteco de BOI (20 KG) 
+                      {{ product?.product_name  }} 
                     </td>
                     <td>
-                        KG
+                      {{ product?.weight  }} {{ product?.unit_name  }} 
                     </td>
                     <td>
-                        2
+                      {{ product?.quantity }} 
                     </td>
                     <td>
-                      R$ 55,00
+                      {{ product?.unit_value | currency:'BRL':true }} 
                     </td>
                     <td>
-                        R$ 110,00
+                      {{ product?.total | currency:'BRL':true }} 
                     </td>
                    
                     <td class="text-right">
@@ -79,35 +102,49 @@
           </button>
         </div>
         <div class="modal-body">
-          <form [formGroup]="addProdutos">
+          <form [formGroup]="addProdutosForm">
 
             <div class="form-group">
-              <label for="input-fornecedores" class="form-control-label">Produtos(*)</label>
-              <select id="input-fornecedores" class="form-control">
-                <option>Esteco de BOI</option> 
-                <option>Esteco de Porco</option> 
+              <label for="input-produto" class="form-control-label">Produtos(*)</label>
+              <select  formControlName="product_id" id="input-produto" class="form-control">
+                <option></option>
+                <option 
+                  *ngFor="let product of products"
+                  [value]="product?.id"
+                >
+                  {{ product?.name }}
+                </option>  
               </select>
+              <div  *ngIf="submittedProduto && !successProduto && addForm?.product_id?.errors">
+                <small class="invalid-feedback" >Campo Obrigatório</small>
+             </div>
             </div>
 
             <div class="form-group">
-                <label for="input-padrao-embalagem" class="form-control-label">Peso:</label>
-                <input id="input-padrao-embalagem" class="form-control" type="number">
+                <label for="input-padrao-embalagem" class="form-control-label">Padrão de Embalagem:</label>
+                <input formControlName="weight" id="input-padrao-embalagem" class="form-control" type="number">
             </div>
 
             <div class="form-group">
                 <label for="input-quantidade" class="form-control-label">Quantidade:</label>
-                <input id="input-quantidade" class="form-control" type="number">
+                <input formControlName="quantity" value="1" id="input-quantidade" class="form-control" type="number">
+                <div *ngIf="submittedProduto && !successProduto && addForm?.quantity?.errors">
+                  <small class="invalid-feedback" style="display: inline;">Campo Obrigatório</small>
+               </div>
             </div>
 
             <div class="form-group">
                 <label for="input-preco-unitario" class="form-control-label">Preço Unitário:</label>
-                <input id="input-preco-unitario" class="form-control" type="text">
+                <input formControlName="unit_value" id="input-preco-unitario" class="form-control" type="number">
+                <div *ngIf="submittedProduto && !successProduto && addForm?.unit_value?.errors">
+                  <small class="invalid-feedback" style="display: inline;">Campo Obrigatório</small>
+               </div>
             </div>
 
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="addProducts()">Adicionar</button>
         </div>
       </ng-template>
 

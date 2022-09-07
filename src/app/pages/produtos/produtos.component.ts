@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
@@ -21,20 +21,23 @@ export class ProdutosComponent implements OnInit {
   public units;
 
   //forms
-  public submittedAdd;
 
   public submittedProduto: Boolean;
   public successProduto: Boolean;
+  tipoModal: any;
+  fn: any;
+  paramsDelete: any;
 
   
   constructor(
     private modalService: NgbModal,
     private productsService: ProductsService,
-    private router: Router,
     private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
+
+    /// this.toastr.success("Produto Criado", "Sucesso")
 
     this.addProdutosForm = new FormGroup({
       name: new FormControl(null, [Validators.required]),
@@ -69,7 +72,8 @@ export class ProdutosComponent implements OnInit {
 
   create(){
 
-    this.submittedAdd = true;
+    this.submittedProduto = true;
+    this.successProduto = false;
 
     if (this.addProdutosForm.invalid)
       return;
@@ -85,13 +89,14 @@ export class ProdutosComponent implements OnInit {
 
         this.getProducts();
 
+        this.successProduto = true;
         this.addProdutosForm.clearValidators();
         this.addProdutosForm.reset();
 
         console.log('produto adicionado com sucesso')
       },
       err => {
-        console.log(err)
+        this.toastr.error("Falha ao adicionar Produto. Tente Novamente!", "Erro", {positionClass: "toast-top-right"})
       })
 
   
@@ -113,9 +118,16 @@ export class ProdutosComponent implements OnInit {
 
   update(){
 
+    
+    this.submittedProduto = true;
+    this.successProduto = false;
 
-    if (!this.editProdutosForm.invalid)
-      return;
+
+    if(this.editProdutosForm.pristine || this.editProdutosForm.untouched || !this.editProdutosForm.valid){
+      return
+    }
+
+
 
 
     const produto = this.editProdutosForm.value
@@ -125,12 +137,13 @@ export class ProdutosComponent implements OnInit {
       .subscribe(
         product => {
 
+          this.successProduto = true;
           this.toastr.info("Produto Editado", "Sucesso", {positionClass: "toast-top-right"})
 
           console.log('produto editado com sucesso')
         },
         err => {
-          console.log('erro ao editar Produto')
+          this.toastr.error("Falha ao Editar Produto. Tente Novamente!", "Erro", {positionClass: "toast-top-right"})
         }
       )
 
@@ -142,14 +155,31 @@ export class ProdutosComponent implements OnInit {
     this.productsService.delete(id)
     .subscribe(
       product => {
-        console.log('produto deletado com sucesso')
+        this.toastr.info("Produto Deletado com sucesso!", "SUCESSO", {positionClass: "toast-top-right"})
       },
       err => {
-        console.log('erro ao deletar Produto')
+        this.toastr.error("Falha ao deletar produto. Tente novamente!", "ERRO", {positionClass: "toast-top-right"})
       }
     )
 
 
+
+  }
+
+  removerProduto(id: Number) {
+
+
+    this.productsService.delete(id)
+      .subscribe(
+        product => {
+          this.toastr.info('Produto Atualizado!', 'Sucesso', {positionClass: 'toast-top-right'});
+
+          this.getProducts();
+        },
+        err => {
+          this.toastr.info('Falha ao deletar Produto!', 'Erro', {positionClass: 'toast-top-right'});
+        }
+      )
 
   }
 
@@ -191,15 +221,41 @@ export class ProdutosComponent implements OnInit {
   }
 
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+  open(content, fn = null, ...params) {
+
+    this.tipoModal = params //recebe o tipo de modal. DETALHES, ou CREATE.
+   
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', 'centered': true }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
+
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+
+    //delete params
+    this.fn = fn;
+    this.paramsDelete = params;
+  }
+
+  
+
+  confirmationDelete() {
+    this.fn(...this.paramsDelete);
   }
 
   private getDismissReason(reason: any): string {
+
+
+    this.successProduto = false;
+    this.submittedProduto = false;
+
+
+    this.addProdutosForm.reset()
+    this.addProdutosForm.setErrors(null)
+    
+    this.editProdutosForm.reset()
+    this.editProdutosForm.setErrors(null)   
+
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {

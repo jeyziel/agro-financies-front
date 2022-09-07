@@ -50,18 +50,18 @@ export class ProductsService {
       .pipe(retry(1));
   }
 
-  public editCategories(id: Number, categorie){
+  public editCategory(id: Number, categorie){
     return this.http.put<any>(`${this.api}/product-category/${id}`, categorie)
       .pipe(retry(1));
   }
 
-  public findCategorie(id: Number){
+  public findCategory(id: Number){
     return this.http.get<any>(`${this.api}/product-category`)
       .pipe(retry(1));
   }
 
-  public removeCategories(id: Number){
-    return this.http.delete<any>(`${this.api}/product-category`)
+  public deleteCategory(id: Number){
+    return this.http.delete<any>(`${this.api}/product-category/${id}`)
       .pipe(retry(1));
   }
 

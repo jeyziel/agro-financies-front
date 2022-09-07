@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,6 +15,7 @@ import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { InterceptorModule } from 'src/app/interceptors/interceptor.module';
 import {ComponentsModule} from '../../components/components.module';
+// import { ToastrModule, ToastrService } from 'ngx-toastr';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -25,7 +27,8 @@ import {ComponentsModule} from '../../components/components.module';
         NgbModule,
         ClipboardModule,
         InterceptorModule,
-        ComponentsModule
+        ComponentsModule,
+        
     ],
   declarations: [
     DashboardComponent,
@@ -34,6 +37,7 @@ import {ComponentsModule} from '../../components/components.module';
     IconsComponent,
     MapsComponent
   ]
+
 })
 
 export class AdminLayoutModule {}

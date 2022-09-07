@@ -1,8 +1,8 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+
 
 import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
@@ -12,6 +12,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ToastrModule } from 'ngx-toastr';
+
 import { AreasProdutivasComponent } from './pages/areas-produtivas/areas-produtivas.component';
 import { ProdutosComponent } from './pages/produtos/produtos.component';
 import { FornecedoresComponent } from './pages/fornecedores/fornecedores.component';
@@ -28,10 +33,18 @@ import { SafrasComponent } from './pages/safras/safras.component';
 import {Interceptor} from './interceptors/interceptor.service';
 import {InterceptorModule} from './interceptors/interceptor.module';
 
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+
+registerLocaleData(localePt);
+
+
+
+
 
 @NgModule({
   imports: [
-    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -40,7 +53,10 @@ import {InterceptorModule} from './interceptors/interceptor.module';
     RouterModule,
     AppRoutingModule,
     InterceptorModule,
-    NgChartsModule
+    NgChartsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
+  
   ],
   declarations: [
     AppComponent,
@@ -60,7 +76,11 @@ import {InterceptorModule} from './interceptors/interceptor.module';
     SafrasComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
+    {provide: LOCALE_ID, useValue: 'pt-BR'}
+
+
+    
   ],
   bootstrap: [AppComponent]
 })

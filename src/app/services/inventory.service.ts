@@ -20,6 +20,18 @@ export class InventoryService {
 
    }
 
+   public update(id: Number, inventory: Inventory) {
+      return this.http.put<Inventory>(`${this.api}/inventory/${id}`, inventory)
+        .pipe(retry(1));
+
+    }
+
+    public delete(id: Number) {
+      return this.http.delete<Inventory>(`${this.api}/inventory/${id}`)
+        .pipe(retry(1));
+
+    }
+
    public all(): Observable<Inventory[]> {
       return this.http.get<Inventory[]>(`${this.api}/inventory`);
    }
@@ -28,8 +40,12 @@ export class InventoryService {
       return this.http.get<Inventory>(`${this.api}/inventory/${id}`);
    }
 
+   public details(id: Number){
+      return this.http.get<any[]>(`${this.api}/inventory/${id}/list-products`);
+   }
+
    public addProduct(id: Number, params){
-      return this.http.get<any>(`${this.api}/inventory/${id}/product`, {params});
+      return this.http.post<any>(`${this.api}/inventory/${id}/product`, params);
    }
 
    public listProducts(id: Number){

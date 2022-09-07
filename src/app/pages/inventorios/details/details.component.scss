@@ -2,10 +2,18 @@
     border-bottom: 1px solid #dee2e6 !important ;
 }
 
-.card{
-    min-height: 80vh;
+.list{
+    min-height: 80vh !important;
+}
+
+.sumario{
+    max-height: 25vh !important;
 }
 
 .table-responsive{
     height: 100vh;
+}
+
+.sumario-text{
+    margin: 0 !important;
 }

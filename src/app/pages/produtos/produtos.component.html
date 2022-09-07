@@ -61,7 +61,7 @@
                         </a>
                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
                           <a class="dropdown-item" (click)="onEditProdutos(product); open(editProdutos);"  >Editar</a>
-                          <a class="dropdown-item" (click)="delete(product?.id)" >Deletar</a>
+                          <a class="dropdown-item"  (click)="open(modalConfirmation, removerProduto, product.id)" >Deletar</a>
                         </div>
                       </div>
                     </td>
@@ -93,10 +93,10 @@
                   id="input-name"
                   class="form-control"
                   type="text"
-                  [ngClass]="{ 'is-invalid': submittedAdd && addForm.name.errors }"
+                  [ngClass]="{ 'is-invalid': (submittedProduto && !successProduto) && editForm.name.errors }"
                 >
-                <div *ngIf="submittedAdd && addForm.name.errors" class="invalid-feedback">
-                  <div>O Nome é obrigatório</div>
+                <div *ngIf="submittedProduto && !successProduto && addForm.name.errors" >
+                  <small class="invalid-feedback" style="display: inline;">O Nome é obrigatório.</small>
                 </div>
 
             </div>
@@ -107,13 +107,25 @@
                   <option  *ngFor="let unit of units" [value]="unit.id">{{ unit.name }}</option>
 
                 </select>
-              </div>
+
+                <div *ngIf="submittedProduto && !successProduto && addForm.product_unit_id.errors">
+                  <small  class="invalid-feedback" style="display: inline;" >A unidade é obrigatória.</small>
+                </div>
+
+
+            </div>
 
             <div class="form-group">
               <label for="input-categorias" class="form-control-label">Categorias(*)</label>
               <select formControlName="product_category_id" id="input-categorias" class="form-control">
                 <option *ngFor="let category of categories" [value]="category.id" >{{ category.name }}</option>
               </select>
+
+              <div *ngIf="submittedProduto && !successProduto && addForm.product_category_id.errors">
+                <small class="invalid-feedback" style="display: inline;">A Categoria é obrigatória.</small>
+
+              </div>
+
             </div>
 
             <div class="form-group">
@@ -145,50 +157,85 @@
           <form [formGroup]="editProdutosForm">
 
 
+   
             <div class="form-group">
-                <label for="input-name" class="form-control-label">Nome(*)</label>
-                <input
-                  formControlName="name"
-                  id="input-name"
-                  class="form-control"
-                  type="text"
-                  [ngClass]="{ 'is-invalid': submittedAdd && addForm.name.errors }"
-                >
-                <div *ngIf="submittedAdd && addForm.name.errors" class="invalid-feedback">
-                  <div>O Nome é obrigatório</div>
-                </div>
-
-            </div>
-
-            <div class="form-group">
-                <label for="input-unidade" class="form-control-label">Unidade(*)</label>
-                <select formControlName="product_unit_id" id="input-unidade" class="form-control">
-                  <option  *ngFor="let unit of units" [value]="unit.id">{{ unit.name }}</option>
-
-                </select>
+              <label for="input-name" class="form-control-label">Nome(*)</label>
+              <input
+                formControlName="name"
+                id="input-name"
+                class="form-control"
+                type="text"
+                [ngClass]="{ 'is-invalid': submittedProduto && !successProduto && editForm.name.errors }"
+              >
+              <div *ngIf="submittedProduto && !successProduto && editForm.name.errors" >
+                <small class="invalid-feedback" style="display: inline;">O Nome é obrigatório.</small>
               </div>
 
-            <div class="form-group">
-              <label for="input-categorias" class="form-control-label">Categorias(*)</label>
-              <select formControlName="product_category_id" id="input-categorias" class="form-control">
-                <option *ngFor="let category of categories" [value]="category.id" >{{ category.name }}</option>
+          </div>
+
+          <div class="form-group">
+              <label for="input-unidade" class="form-control-label">Unidade(*)</label>
+              <select formControlName="product_unit_id" id="input-unidade" class="form-control">
+                <option  *ngFor="let unit of units" [value]="unit.id">{{ unit.name }}</option>
+
               </select>
+
+              <div *ngIf="submittedProduto && !successProduto && editForm.product_unit_id.errors">
+                <small  class="invalid-feedback" style="display: inline;" >A unidade é obrigatória.</small>
+              </div>
+
+
+          </div>
+
+          <div class="form-group">
+            <label for="input-categorias" class="form-control-label">Categorias(*)</label>
+            <select formControlName="product_category_id" id="input-categorias" class="form-control">
+              <option *ngFor="let category of categories" [value]="category.id" >{{ category.name }}</option>
+            </select>
+
+            <div *ngIf="submittedProduto && !successProduto && editForm.product_category_id.errors">
+              <small class="invalid-feedback" style="display: inline;">A Categoria é obrigatória.</small>
+
             </div>
 
-            <div class="form-group">
-              <label for="input-funcao" class="form-control-label">Função</label>
-              <input formControlName="function" id="input-funcao" class="form-control" type="text">
-            </div>
+          </div>
 
-            <div class="form-group">
-                <label for="input-alternativos" class="form-control-label">Prod. Alternativos</label>
-                <input formControlName="alternative_products" id="input-alternativos" class="form-control" type="text">
-            </div>
+          <div class="form-group">
+            <label for="input-funcao" class="form-control-label">Função</label>
+            <input formControlName="function" id="input-funcao" class="form-control" type="text">
+          </div>
+
+          <div class="form-group">
+              <label for="input-alternativos" class="form-control-label">Prod. Alternativos</label>
+              <input formControlName="alternative_products" id="input-alternativos" class="form-control" type="text">
+          </div>
 
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="update()">EDITAR</button>
+          <button  type="button" class="btn btn-outline-dark" (click)="update()">EDITAR</button>
+        </div>
+      </ng-template>
+
+      <ng-template #modalConfirmation let-modal>
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-basic-title">Confirmação de Ação</h3>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            Deseja Remover Esse Produto?
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="modal.dismiss('Cross click')" class="btn bg-gradient-secondary mr-3 mr-auto text-left">
+            Cancelar
+          </button>
+          <button (click)="confirmationDelete(); modal.dismiss('Cross click')" type="button" class="btn bg-gradient-danger float-right">
+            Confimar
+          </button>
         </div>
       </ng-template>
 
