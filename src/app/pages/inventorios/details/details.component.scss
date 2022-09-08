@@ -7,7 +7,8 @@
 }
 
 .sumario{
-    max-height: 25vh !important;
+    min-height: 25vh !important;
+    max-height: 100vh !important;
 }
 
 .table-responsive{
@@ -17,3 +18,8 @@
 .sumario-text{
     margin: 0 !important;
 }
+
+tr:hover{
+    background: #CCCCCC;
+    cursor: pointer;
+  }

@@ -95,10 +95,9 @@ export class DetailsComponent implements OnInit {
     this.submittedProduto = true;
     this.successProduto = false;
 
-    console.log(this.addProdutosForm.invalid)
-
-
-
+    if (this.addProdutosForm.invalid)
+      return;
+  
 
     const product = this.addProdutosForm.value
 
@@ -109,6 +108,9 @@ export class DetailsComponent implements OnInit {
         this.getDetailInventory(this.idIventory);
         
         this.successProduto = true
+
+        this.addProdutosForm.reset()
+        this.editProdutosForm.setErrors(null)
 
       }, (error) => {
         this.toastr.error("Falha ao Adicionar Produto. Tente Novamente!", "Erro", {positionClass: "toast-top-right"})

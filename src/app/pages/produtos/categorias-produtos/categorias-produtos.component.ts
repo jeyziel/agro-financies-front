@@ -90,6 +90,9 @@ export class CategoriasProdutosComponent implements OnInit {
           this.successCategoria = true;
           this.toastr.info("Categoria Atualizada!", "Sucesso", {positionClass: "toast-top-right"})
 
+
+          this.getCategories();
+
         },
         err => {
           this.toastr.error("Falha ao Atualizar Categoria. Tente Novamente!", "Erro", {positionClass: "toast-top-right"})

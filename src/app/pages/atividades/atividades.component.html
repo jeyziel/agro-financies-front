@@ -16,6 +16,7 @@
                 </div>
                 <div class="col-4 text-right">
                     <a class="btn btn-sm btn-primary" (click)="open(addAtividades)">Adicionar</a>
+                    <a class="btn btn-sm btn-primary" [routerLink]="['/atividades/categorias']" >Categorias</a>
                 </div>
             </div>
             
@@ -32,18 +33,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let atividade of atividades">
                     <td>
-                      Raleio
+                      {{ atividade.name }}
                     </td>
                     <td>
-                      Infraestrutura
+                      {{ atividade?.category_name ? atividade?.category_name :'-' }}
                     </td>
                     <td>
-                        R$ 500,00
+                      {{ atividade.price_default| currency:'BRL':true }}
                     </td>
                     <td>
-                      15/08/2022
+                      {{ atividade.created_at | date: 'dd/MM/yyyy' }}
                     </td>
                    
                     <td class="text-right">
@@ -52,8 +53,8 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" >Editar</a>
-                          <a class="dropdown-item" >Deletar</a>
+                          <a (click)="onEdit(atividade);open(editAtividades);" class="dropdown-item" >Editar</a>
+                          <a  (click)="open(modalConfirmation, delete, atividade.id)"class="dropdown-item" >Excluir</a>
                         </div>
                       </div>
                     </td>
@@ -75,33 +76,108 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form [formGroup]="addAtividadesForm">
 
 
             <div class="form-group">
                 <label for="input-name" class="form-control-label">Nome(*)</label>
-                <input  id="input-name" class="form-control" type="text">
-            </div>
+                <input formControlName="name" id="input-name" class="form-control" type="text">
+                <div *ngIf="submittedAtividade && !successAtividade && addForm.name.errors" >
+                  <small class="invalid-feedback" style="display: inline;">O nome é obrigatório.</small>
+                </div>
+              </div>
   
             <div class="form-group">
               <label for="input-categorias" class="form-control-label">Categorias(*)</label>
-              <select id="input-categorias" class="form-control">
-                <option>Mão de Obra</option> 
-                <option>Infraestrutura</option> 
+              <select formControlName="task_category_id" id="input-categorias" class="form-control">
+                <option></option>
+                <option  *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option> 
               </select>
+              <div *ngIf="submittedAtividade && !successAtividade && addForm.task_category_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">O categoria é obrigatória.</small>
+              </div>
             </div>
   
             <div class="form-group">
               <label for="input-preco-default" class="form-control-label">Preço Padrão</label>
-              <input id="input-preco-default" class="form-control" type="text" placeholder="R$">
+              <input formControlName="price_default"  id="input-preco-default" class="form-control" type="text" placeholder="R$">
             </div>
   
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+          <button (click)="create()" type="button" class="btn btn-outline-dark" >Criar</button>
         </div>
       </ng-template>
+
+      <ng-template #editAtividades let-modal>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Editar Atividades</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editAtividadesForm">
+
+
+            <div class="form-group">
+                <label for="input-name" class="form-control-label">Nome(*)</label>
+                <input formControlName="name" id="input-name" class="form-control" type="text">
+                <div *ngIf="submittedAtividade && !successAtividade && editForm.name.errors" >
+                  <small class="invalid-feedback" style="display: inline;">O nome é obrigatório.</small>
+                </div>
+              </div>
+  
+            <div class="form-group">
+              <label for="input-categorias" class="form-control-label">Categorias(*)</label>
+              <select formControlName="task_category_id" id="input-categorias" class="form-control">
+                <option></option>
+                <option [value]="category.id" *ngFor="let category of categories">{{ category.name }}</option> 
+              </select>
+              <div *ngIf="submittedAtividade && !successAtividade && editForm.task_category_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">O categoria é obrigatória.</small>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label for="input-preco-default" class="form-control-label">Preço Padrão</label>
+              <input formControlName="price_default"  id="input-preco-default" class="form-control" type="number" placeholder="R$">
+              <div *ngIf="submittedAtividade && !successAtividade && editForm.default_price.errors" >
+                <small class="invalid-feedback" style="display: inline;">O campo deve ser numérico.</small>
+              </div>
+            </div>
+  
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button (click)="update()" type="button" class="btn btn-outline-dark" >Salvar</button>
+        </div>
+      </ng-template>
+
+      <ng-template #modalConfirmation let-modal>
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-basic-title">Confirmação de Ação</h3>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            Deseja Remover Essa Categoria?
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="modal.dismiss('Cross click')" class="btn bg-gradient-secondary mr-3 mr-auto text-left">
+            Cancelar
+          </button>
+          <button (click)="confirmationDelete(); modal.dismiss('Cross click')" type="button" class="btn bg-gradient-danger float-right">
+            Confimar
+          </button>
+        </div>
+      </ng-template>
+
 
 
     </div>
