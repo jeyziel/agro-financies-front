@@ -10,14 +10,22 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class FornecedoresComponent implements OnInit {
 
   closeResult = '';
-  public addFornecedores : FormGroup;
+  public addFornecedoresForm : FormGroup;
+  public editFornecedoresForm : FormGroup;
 
   constructor(private modalService: NgbModal) { }
 
  
   ngOnInit(): void {
 
-    this.addFornecedores = new FormGroup({
+    this.addFornecedoresForm = new FormGroup({
+      name: new FormControl(null, [Validators.required]),
+      cnpj: new FormControl(null, [Validators.nullValidator]),
+      phone: new FormControl(null, [Validators.nullValidator]),
+      address: new FormControl(null, [Validators.nullValidator])
+    })
+
+    this.editFornecedoresForm = new FormGroup({
       name: new FormControl(null, [Validators.required]),
       cnpj: new FormControl(null, [Validators.nullValidator]),
       phone: new FormControl(null, [Validators.nullValidator]),

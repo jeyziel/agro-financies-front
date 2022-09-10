@@ -33,21 +33,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let funcionario of funcionarios">
                     <td>
-                      Jeyziel Gama
+                      {{ funcionario?.name }}
                     </td>
                     <td>
-                      520
+                      {{ funcionario?.matricula }}
                     </td>
                     <td>
-                        74 981226151
+                      {{ funcionario?.phone }}
                     </td>
                     <td>
-                      Zelador
+                      {{ funcionario?.function }}
                     </td>
                     <td>
-                        Rua M, Caminho 54
+                      {{ funcionario?.address }}
                     </td>
                    
                     <td class="text-right">
@@ -56,8 +56,8 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" >Editar</a>
-                          <a class="dropdown-item" >Deletar</a>
+                          <a (click)="onEditFuncionario(funcionario);open(editFuncionarios);" class="dropdown-item" >Editar</a>
+                          <a  (click)="open(modalConfirmation, delete, funcionario.id)"class="dropdown-item" >Excluir</a>
                         </div>
                       </div>
                     </td>
@@ -79,39 +79,118 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form [formGroup]="addFuncionariosForm">
 
 
             <div class="form-group">
-                <label for="input-name" class="form-control-label">Nome(*)</label>
-                <input  id="input-name" class="form-control" type="text">
+              <label for="input-name" class="form-control-label">Nome(*)</label>
+              <input formControlName="name" id="input-name" class="form-control" type="text">
+              <div *ngIf="submittedFuncionario && !successFuncionario && addForm.name.errors" >
+                <small class="invalid-feedback" style="display: inline;">O nome é obrigatório.</small>
+              </div>
             </div>
 
             
             <div class="form-group">
                 <label for="input-cnpj" class="form-control-label">Matricula(*):</label>
-                <input id="input-cnpj" class="form-control" type="text">
+                <input formControlName="matricula" id="input-cnpj" class="form-control" type="text">
+                <div *ngIf="submittedFuncionario && !successFuncionario && addForm.matricula.errors" >
+                  <small class="invalid-feedback" style="display: inline;">A matricula é obrigatória.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-phone" class="form-control-label">Telefone:</label>
+              <input formControlName="phone" id="input-phone" class="form-control" type="text">
+          </div>
+
+          <div class="form-group">
+              <label for="input-funcao" class="form-control-label">Função:</label>
+              <input  formControlName="function"  id="input-funcao" class="form-control" type="text">
+          </div>
+
+          <div class="form-group">
+            <label for="input-address" class="form-control-label">Endereço:</label>
+            <textarea formControlName="address" class="form-control" rows="2"> </textarea>
+          </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="create()">Criar</button>
+        </div>
+      </ng-template>
+
+      <ng-template #editFuncionarios let-modal>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Editar Funcionarios</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editFuncionariosForm">
+
+
+            <div class="form-group">
+              <label for="input-name" class="form-control-label">Nome(*)</label>
+              <input formControlName="name" id="input-name" class="form-control" type="text">
+              <div *ngIf="submittedFuncionario && !successFuncionario && editForm.name.errors" >
+                <small class="invalid-feedback" style="display: inline;">O nome é obrigatório.</small>
+              </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="input-cnpj" class="form-control-label">Matricula(*):</label>
+                <input formControlName="matricula" id="input-cnpj" class="form-control" type="text">
+                <div *ngIf="submittedFuncionario && !successFuncionario && editForm.matricula.errors" >
+                  <small class="invalid-feedback" style="display: inline;">A matricula é obrigatória.</small>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="input-phone" class="form-control-label">Telefone:</label>
-                <input id="input-phone" class="form-control" type="text">
+                <input formControlName="phone" id="input-phone" class="form-control" type="text">
             </div>
 
             <div class="form-group">
                 <label for="input-funcao" class="form-control-label">Função:</label>
-                <input id="input-funcao" class="form-control" type="text">
+                <input  formControlName="function"  id="input-funcao" class="form-control" type="text">
             </div>
 
             <div class="form-group">
               <label for="input-address" class="form-control-label">Endereço:</label>
-              <textarea class="form-control" rows="2"> </textarea>
+              <textarea formControlName="address" class="form-control" rows="2"> </textarea>
             </div>
   
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+          <button (click)="update()" type="button" class="btn btn-outline-dark" >SALVAR</button>
+        </div>
+      </ng-template>
+
+      <ng-template #modalConfirmation let-modal>
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-basic-title">Confirmação de Ação</h3>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            Deseja Remover Esse Funcionario?
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="modal.dismiss('Cross click')" class="btn bg-gradient-secondary mr-3 mr-auto text-left">
+            Cancelar
+          </button>
+          <button (click)="confirmationDelete(); modal.dismiss('Cross click')" type="button" class="btn bg-gradient-danger float-right">
+            Confimar
+          </button>
         </div>
       </ng-template>
 

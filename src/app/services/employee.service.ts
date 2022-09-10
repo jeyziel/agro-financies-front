@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../environments/environment';
-import {Inventory} from '../interfaces/inventory';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProvidersService {
+export class EmployeeService {
 
   private api;
 
@@ -15,19 +14,23 @@ export class ProvidersService {
   }
 
   create(params) {
-    return this.http.get<any>(`${this.api}/providers`, params);
+    return this.http.post<any>(`${this.api}/employee`, params);
   }
 
   edit(id: Number, params) {
-    return this.http.get<any>(`${this.api}/providers`, params);
+    return this.http.get<any>(`${this.api}/employee/${id}`, params);
+  }
+
+  delete(id: Number) {
+    return this.http.delete<any>(`${this.api}/employee/${id}`);
   }
 
   all() {
-    return this.http.get<any>(`${this.api}/providers`);
+    return this.http.get<any>(`${this.api}/employee`);
   }
 
   find(id: Number) {
-    return this.http.get<any>(`${this.api}/providers/${id}`);
+    return this.http.get<any>(`${this.api}/employees/${id}`);
   }
 
 

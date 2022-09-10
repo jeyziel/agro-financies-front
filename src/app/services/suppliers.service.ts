@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class ProvidersService {
+export class SuppliersService {
 
   private api;
 
@@ -15,20 +15,18 @@ export class ProvidersService {
   }
 
   create(params) {
-    return this.http.get<any>(`${this.api}/providers`, params);
+    return this.http.get<any>(`${this.api}/suppliers`, params);
   }
 
   edit(id: Number, params) {
-    return this.http.get<any>(`${this.api}/providers`, params);
+    return this.http.get<any>(`${this.api}/suppliers`, params);
   }
 
   all() {
-    return this.http.get<any>(`${this.api}/providers`);
+    return this.http.get<any>(`${this.api}/suppliers`);
   }
 
   find(id: Number) {
-    return this.http.get<any>(`${this.api}/providers/${id}`);
+    return this.http.get<any>(`${this.api}/suppliers/${id}`);
   }
-
-
 }
