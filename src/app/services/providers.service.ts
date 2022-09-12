@@ -15,11 +15,15 @@ export class ProvidersService {
   }
 
   create(params) {
-    return this.http.get<any>(`${this.api}/providers`, params);
+    return this.http.post<any>(`${this.api}/providers`, params);
   }
 
   edit(id: Number, params) {
-    return this.http.get<any>(`${this.api}/providers`, params);
+    return this.http.put<any>(`${this.api}/providers/${id}`, params);
+  }
+
+  delete(id: Number) {
+    return this.http.delete<any>(`${this.api}/providers/${id}`);
   }
 
   all() {

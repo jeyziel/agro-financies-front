@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class SalesService {
+export class VarietiesService {
 
   private api;
 
@@ -14,22 +14,25 @@ export class SalesService {
   }
 
   create(params) {
-    return this.http.post<any>(`${this.api}/sales`, params);
+    return this.http.post<any>(`${this.api}/varieties`, params);
   }
 
+
   edit(id: Number, params) {
-    return this.http.put<any>(`${this.api}/sales/${id}`, params);
+    return this.http.put<any>(`${this.api}/varieties/${id}`, params);
   }
 
   delete(id: Number) {
-    return this.http.delete<any>(`${this.api}/sales/${id}`);
+    return this.http.delete<any>(`${this.api}/varieties/${id}`);
   }
 
+
+
   all() {
-    return this.http.get<any>(`${this.api}/sales`);
+    return this.http.get<any>(`${this.api}/varieties`);
   }
 
   find(id: Number) {
-    return this.http.get<any>(`${this.api}/sales/${id}`);
+    return this.http.get<any>(`${this.api}/varieties/${id}`);
   }
 }

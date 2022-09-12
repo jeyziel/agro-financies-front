@@ -15,15 +15,20 @@ export class SuppliersService {
   }
 
   create(params) {
-    return this.http.get<any>(`${this.api}/suppliers`, params);
+    return this.http.post<any>(`${this.api}/suppliers`, params);
   }
+
+  delete(id: Number) {
+    return this.http.delete<any>(`${this.api}/suppliers/${id}`);
+  }
+
 
   edit(id: Number, params) {
-    return this.http.get<any>(`${this.api}/suppliers`, params);
+    return this.http.put<any>(`${this.api}/suppliers/${id}`, params);
   }
 
-  all() {
-    return this.http.get<any>(`${this.api}/suppliers`);
+  all(params) {
+    return this.http.get<any>(`${this.api}/suppliers`, {params});
   }
 
   find(id: Number) {

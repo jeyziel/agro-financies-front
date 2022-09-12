@@ -38,28 +38,33 @@
                   <th scope="col">Nome</th>
                   <th scope="col">Variedade</th>
                   <th scope="col">Tamanho(h)</th>
+                  <th scope="col">Qtd. Plantas</th>
+                  <th scope="col">Porta Enxerto</th>
                   <th scope="col">Data de Plantio</th>
-                  <th scope="col">Data da Poda</th>
                   <th scope="col">Ações</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let area of areas">
                     <td>
-                      Válvula 1
+                      {{ area?.name }}
                     </td>
                     <td>
-                      Thompson
+                      {{ area?.variety_name }}
                     </td>
                     <td>
-                        0.5
+                      {{ area?.size }}
                     </td>
                     <td>
-                      15/08/2022
+                      {{ area?.quantity_plants }}
                     </td>
                     <td>
-                        15/08/2022
+                      {{ area?.porta_enxerto }}
                     </td>
+                    <td>
+                      {{ area?.planting_at }}
+                    </td>
+                   
                     <td class="text-right">
                       <div ngbDropdown placement="bottom-right">
                         <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
@@ -68,8 +73,9 @@
                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
                           <a class="dropdown-item" (click)="open(addMetaCusto)" >Meta de Custo</a>
                           <a class="dropdown-item"  (click)="open(addMetaProdutividade)">Meta de Produtividade</a>
-                          <a class="dropdown-item" >Editar</a>
-                          <a class="dropdown-item" >Deletar</a>
+                          <a class="dropdown-item" (click)="open(addMetaCusto)" >Podas</a>
+                          <a class="dropdown-item" (click)="onEditAreasProdutivas(area); open(editAreaProdutiva);"  >Editar</a>
+                          <a class="dropdown-item"  (click)="open(modalConfirmation, removerAreaProdutiva, area?.id)" >Deletar</a>
                         </div>
                       </div>
                     </td>
@@ -92,50 +98,139 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="addAreasProdutivasForm">
 
           <div class="form-group">
+         
             <label for="example-text-input" class="form-control-label">Nome(*)</label>
-            <input class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
+            <input  formControlName="name" class="form-control" type="text">
+         
+            <div *ngIf="submittedArea && !successArea && addForm.name.errors" >
+              <small class="invalid-feedback" style="display: inline;">O nome é obrigatório.</small>
+            </div>
+         
           </div>
 
           <div class="form-group">
             <label for="input-variedade" class="form-control-label">Variedade(*)</label>
-            <select  class="form-control" id="input-variedade">
-              <option>Thompson</option>
-              
+            <select formControlName="variety_id" class="form-control" id="input-variedade">
+              <option></option>
+              <option *ngFor="let variedade of variedades" [value]="variedade?.id">{{ variedade?.name }}</option>
+         
             </select>
+
+            <div *ngIf="submittedArea && !successArea && addForm.variety_id.errors" >
+              <small class="invalid-feedback" style="display: inline;">A variedade é obrigatória!.</small>
+            </div>
+
           </div>
 
           <div class="form-group">
             <label for="example-text-input" class="form-control-label">Tamanho:</label>
-            <input class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
+            <input formControlName="size" class="form-control" type="text">
           </div>
 
           <div class="form-group">
             <label for="example-text-input" class="form-control-label">Qtd. Plantas:</label>
-            <input class="form-control" type="number" onfocus="focused(this)" onfocusout="defocused(this)">
+            <input formControlName="quantity_plants" class="form-control" type="number">
           </div>
 
           <div class="form-group">
             <label for="example-text-input" class="form-control-label">Qtd. Linhas:</label>
-            <input class="form-control" type="number"  onfocus="focused(this)" onfocusout="defocused(this)">
+            <input formControlName="quantity_lines" class="form-control" type="number" >
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Qtd. Porta Enxerto:</label>
+            <input formControlName="porta_enxerto" class="form-control" type="number" >
           </div>
 
           <div class="form-group">
             <label for="example-text-input" class="form-control-label">Espaçamento:</label>
-            <input class="form-control" type="text"  onfocus="focused(this)" onfocusout="defocused(this)">
+            <input formControlName="spacing" class="form-control" type="text" >
           </div>
 
           <div class="form-group">
             <label for="example-text-input" class="form-control-label">Data de Plantio:</label>
-            <input class="form-control" type="date"  onfocus="focused(this)" onfocusout="defocused(this)">
+            <input formControlName="planting_at" class="form-control" type="date" >
           </div>
 
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        <button type="button" class="btn btn-outline-dark" (click)="create()">Criar</button>
+      </div>
+    </ng-template>
+
+    <ng-template #editAreaProdutiva let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Criar Áreas Produtivas</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editAreasProdutivasForm">
+
+          <div class="form-group">
+         
+            <label for="example-text-input" class="form-control-label">Nome(*)</label>
+            <input  formControlName="name" class="form-control" type="text">
+         
+            <div *ngIf="submittedArea && !successArea && editForm.name.errors" >
+              <small class="invalid-feedback" style="display: inline;">O nome é obrigatório.</small>
+            </div>
+         
+          </div>
+
+          <div class="form-group">
+            <label for="input-variedade" class="form-control-label">Variedade(*)</label>
+            <select formControlName="variety_id" class="form-control" id="input-variedade">
+              <option></option>
+              <option *ngFor="let variedade of variedades" [value]="variedade?.id">{{ variedade?.name }}</option>
+         
+            </select>
+
+            <div *ngIf="submittedArea && !successArea && editForm.variety_id.errors" >
+              <small class="invalid-feedback" style="display: inline;">A variedade é obrigatória!.</small>
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Tamanho:</label>
+            <input formControlName="size" class="form-control" type="text">
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Qtd. Plantas:</label>
+            <input formControlName="quantity_plants" class="form-control" type="number">
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Qtd. Linhas:</label>
+            <input formControlName="quantity_lines" class="form-control" type="number" >
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Qtd. Porta Enxerto:</label>
+            <input formControlName="porta_enxerto" class="form-control" type="number" >
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Espaçamento:</label>
+            <input formControlName="spacing" class="form-control" type="text" >
+          </div>
+
+          <div class="form-group">
+            <label for="example-text-input" class="form-control-label">Data de Plantio:</label>
+            <input formControlName="planting_at" class="form-control" type="date" >
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="update()">Salvar</button>
       </div>
     </ng-template>
 
@@ -198,6 +293,28 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </ng-template>
+
+    <ng-template #modalConfirmation let-modal>
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-basic-title">Confirmação de Ação</h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+          Deseja Remover Essa Área Produtiva?
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="modal.dismiss('Cross click')" class="btn bg-gradient-secondary mr-3 mr-auto text-left">
+          Cancelar
+        </button>
+        <button (click)="confirmationDelete(); modal.dismiss('Cross click')" type="button" class="btn bg-gradient-danger float-right">
+          Confimar
+        </button>
       </div>
     </ng-template>
 

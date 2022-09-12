@@ -17,6 +17,7 @@ import { InventoriosComponent } from 'src/app/pages/inventorios/inventorios.comp
 import { DetailsComponent } from 'src/app/pages/inventorios/details/details.component';
 import { ConsumosComponent } from 'src/app/pages/consumos/consumos.component';
 import { SafrasComponent } from 'src/app/pages/safras/safras.component';
+import { VendasComponent } from 'src/app/pages/vendas/vendas.component';
 
 export const AdminLayoutRoutes: Routes = [
     {
@@ -68,8 +69,9 @@ export const AdminLayoutRoutes: Routes = [
                 component: FornecedoresComponent
             },
             {
-                path: 'vendendores',
-                component: VendedoresComponent
+                path: ':id/vendedores',
+                component: VendedoresComponent,
+                pathMatch: 'full'
             }
         ]
 
@@ -99,6 +101,16 @@ export const AdminLayoutRoutes: Routes = [
             {
                 path: '',
                 component: ConsumosComponent
+            },
+        ]
+
+    },
+    {
+        path: 'vendas',
+        children: [
+            {
+                path: '',
+                component: VendasComponent
             },
         ]
 

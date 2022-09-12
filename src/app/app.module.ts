@@ -36,6 +36,7 @@ import {InterceptorModule} from './interceptors/interceptor.module';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { VendasComponent } from './pages/vendas/vendas.component';
 
 registerLocaleData(localePt);
 
@@ -73,7 +74,8 @@ registerLocaleData(localePt);
     CategoriasProdutosComponent,
     VendedoresComponent,
     DetailsComponent,
-    SafrasComponent
+    SafrasComponent,
+    VendasComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },

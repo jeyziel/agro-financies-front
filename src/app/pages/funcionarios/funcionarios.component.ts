@@ -59,31 +59,7 @@ export class FuncionariosComponent implements OnInit {
 
   }
 
-  get addForm(){
-    return this.addFuncionariosForm.controls
-  }
 
-  get editForm(){
-    return this.editFuncionariosForm.controls
-  }
-
-  
-
-  open(content, fn = null, ...params) {
-
-    
-   
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', 'centered': true }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-
-    //delete params
-    this.fn = fn;
-    this.paramsDelete = params;
-  }
 
 
   create(){
@@ -190,6 +166,33 @@ export class FuncionariosComponent implements OnInit {
   }
 
  
+
+
+  get addForm(){
+    return this.addFuncionariosForm.controls
+  }
+
+  get editForm(){
+    return this.editFuncionariosForm.controls
+  }
+
+  
+
+  open(content, fn = null, ...params) {
+
+    
+   
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', 'centered': true }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+
+    //delete params
+    this.fn = fn;
+    this.paramsDelete = params;
+  }
 
   
   confirmationDelete() {

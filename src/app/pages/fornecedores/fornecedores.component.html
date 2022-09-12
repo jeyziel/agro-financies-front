@@ -32,18 +32,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let fornecedor of fornecedores">
                     <td>
-                      Rei do Adubo
+                      {{ fornecedor?.name }}
                     </td>
                     <td>
-                      076.034.485-06
+                      {{ fornecedor?.cnpj }}
                     </td>
                     <td>
-                        74 981226151
+                        {{ fornecedor?.phone }}
                     </td>
                     <td>
-                      Rua da esmeralda, nº 84
+                       {{ fornecedor?.cnpj }}
                     </td>
                    
                     <td class="text-right">
@@ -52,9 +52,9 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" >Ver Vendendores</a>
-                          <a class="dropdown-item" >Editar</a>
-                          <a class="dropdown-item" >Deletar</a>
+                          <a [routerLink]="[fornecedor?.id, 'vendedores']"  class="dropdown-item" >Ver Vendendores</a>
+                          <a class="dropdown-item" (click)="onEditFornecedor(fornecedor); open(editFornecedores);"  >Editar</a>
+                          <a class="dropdown-item"  (click)="open(modalConfirmation, removerFornecedor, fornecedor?.id)" >Deletar</a>
                         </div>
                       </div>
                     </td>
@@ -76,34 +76,108 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form [formGroup]="addFornecedoresForm">
 
 
             <div class="form-group">
                 <label for="input-name" class="form-control-label">Nome(*)</label>
-                <input  id="input-name" class="form-control" type="text">
+                <input formControlName="name" id="input-name" class="form-control" type="text">
+                <div *ngIf="submittedFornecedor && !successFornecedor && addForm.name.errors" >
+                  <small class="invalid-feedback" style="display: inline;">O nome é obrigatório.</small>
+                </div>
             </div>
 
             
             <div class="form-group">
                 <label for="input-cnpj" class="form-control-label">CNPJ/CPF(*)</label>
-                <input id="input-cnpj" class="form-control" type="text">
+                <input formControlName="cnpj" id="input-cnpj" class="form-control" type="text">
+                <div *ngIf="submittedFornecedor && !successFornecedor && addForm.cnpj.errors">
+                  <small class="invalid-feedback" style="display: inline;">O CNPJ é obrigatório.</small>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="input-phone" class="form-control-label">Telefone</label>
-                <input id="input-phone" class="form-control" type="text">
+                <input formControlName="phone" id="input-phone" class="form-control" type="text">
             </div>
 
             <div class="form-group">
               <label for="input-address" class="form-control-label">Endereço:</label>
-              <textarea class="form-control" rows="2"> </textarea>
+              <textarea formControlName="address" class="form-control" rows="2"> </textarea>
             </div>
   
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+          <button (click)="create()" type="button" class="btn btn-outline-dark" >Criar</button>
+        </div>
+      </ng-template>
+
+      <ng-template #editFornecedores let-modal>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Editar Fornecedores</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editFornecedoresForm">
+
+
+            <div class="form-group">
+              <label for="input-name" class="form-control-label">Nome(*)</label>
+              <input formControlName="name" id="input-name" class="form-control" type="text">
+              <div *ngIf="submittedFornecedor && !successFornecedor && editForm.name.errors" >
+                <small class="invalid-feedback" style="display: inline;">O nome é obrigatório.</small>
+              </div>
+          </div>
+
+          
+          <div class="form-group">
+              <label for="input-cnpj" class="form-control-label">CNPJ/CPF(*)</label>
+              <input formControlName="cnpj" id="input-cnpj" class="form-control" type="text">
+              <div *ngIf="submittedFornecedor && !successFornecedor && editForm.cnpj.errors">
+                <small class="invalid-feedback" style="display: inline;">O CNPJ é obrigatório.</small>
+              </div>
+          </div>
+
+            <div class="form-group">
+                <label for="input-phone" class="form-control-label">Telefone</label>
+                <input formControlName="phone" id="input-phone" class="form-control" type="text">
+            </div>
+
+            <div class="form-group">
+              <label for="input-address" class="form-control-label">Endereço:</label>
+              <textarea formControlName="address" class="form-control" rows="2"> </textarea>
+            </div>
+  
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button (click)="update()" type="button" class="btn btn-outline-dark" >SALVAR</button>
+        </div>
+      </ng-template>
+
+      <ng-template #modalConfirmation let-modal>
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-basic-title">Confirmação de Ação</h3>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            Deseja Remover Esse Fornecedor?
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="modal.dismiss('Cross click')" class="btn bg-gradient-secondary mr-3 mr-auto text-left">
+            Cancelar
+          </button>
+          <button (click)="confirmationDelete(); modal.dismiss('Cross click')" type="button" class="btn bg-gradient-danger float-right">
+            Confimar
+          </button>
         </div>
       </ng-template>
 
