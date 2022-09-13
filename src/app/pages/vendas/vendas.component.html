@@ -15,7 +15,7 @@
                     <h3 class="mb-0">VENDAS DE FRUTAS</h3>
                 </div>
                 <div class="col-4 text-right">
-                    <!-- <a class="btn btn-sm btn-primary" (click)="open(addProdutos)" >Lançar Venda</a> -->
+                   <a class="btn btn-sm btn-primary" (click)="open(addVendas)" >Lançar Venda</a> 
                 </div>
 
 
@@ -40,7 +40,7 @@
               <tbody>
                 <tr *ngFor="let sale of sales">
                     <td>
-                      {{ sale?.productive_area_name }} )
+                      {{ sale?.productive_area_name }} 
                     </td>
                     <td>
                         {{ sale?.safra_name }} 
@@ -68,7 +68,8 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-
+                          <a class="dropdown-item" (click)="onEditSales(sale); open(editVendas);"  >Editar</a>
+                          <a class="dropdown-item"  (click)="open(modalConfirmation, delete, sale?.id)" >Deletar</a>
                         </div>
                       </div>
                     </td>
@@ -95,59 +96,152 @@
             <div class="form-group">
               <label for="input-safra" class="form-control-label">Safra(*)</label>
               <select formControlName="safra_id" id="input-safra" class="form-control">
-                <option  *ngFor="let safra of safras" [value]="unit.id">{{ safra?.name }}</option>
+                <option  *ngFor="let safra of safras" [value]="safra?.id">{{ safra?.name }}</option>
               </select>
 
-              <div *ngIf="submittedProduto && !successProduto && addForm.product_unit_id.errors">
+              <div *ngIf="submittedSales && !successSales && addForm.safra_id.errors">
                 <small  class="invalid-feedback" style="display: inline;" >A unidade é obrigatória.</small>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="input-safra" class="form-control-label">Área Produtiva(*)</label>
-              <select formControlName="productive_area_id" id="input-safra" class="form-control">
-                <option  *ngFor="let area of areas" [value]="unit.id">{{ area?.name }}</option>
+              <label for="input-area" class="form-control-label">Área Produtiva(*)</label>
+              <select formControlName="productive_area_id" id="input-area" class="form-control">
+                <option  *ngFor="let area of areas" [value]="area.id">{{ area?.name }}</option>
               </select>
 
-              <div *ngIf="submittedProduto && !successProduto && addForm.product_unit_id.errors">
+              <div *ngIf="submittedSales && !successSales && addForm.productive_area_id.errors">
                 <small  class="invalid-feedback" style="display: inline;" >A área é obrigatória.</small>
               </div>
             </div>
 
             
             <div class="form-group">
-                <label for="input-cnpj" class="form-control-label">Quantidade(*):</label>
-                <input formControlName="quantity" id="input-cnpj" class="form-control" type="text">
-                <div *ngIf="submittedFuncionario && !successFuncionario && addForm.matricula.errors" >
+                <label for="input-quantity" class="form-control-label">Quantidade(*):</label>
+                <input formControlName="quantity" id="quantity" class="form-control" type="text">
+                <div *ngIf="submittedSales && !successSales && addForm.quantity.errors" >
                   <small class="invalid-feedback" style="display: inline;">A quantidade é obrigatória.</small>
                 </div>
             </div>
 
             <div class="form-group">
-              <label for="input-cnpj" class="form-control-label">Preço(*):</label>
-              <input formControlName="price" id="input-cnpj" class="form-control" type="text">
-              <div *ngIf="submittedFuncionario && !successFuncionario && addForm.matricula.errors" >
-                <small class="invalid-feedback" style="display: inline;">O preço é obrigatório.</small>
+              <label for="input-price" class="form-control-label">Preço(*):</label>
+              <input formControlName="price" id="input-price" class="form-control" type="text">
+              <div *ngIf="submittedSales && !successSales && addForm.price.errors" >
+                <p class="invalid-feedback" style="display: inline;">O preço é obrigatório.</p>
               </div>
           </div>
 
             <div class="form-group">
-              <label for="input-phone" class="form-control-label">Data de Venda:</label>
-              <input formControlName="phone" id="input-phone" class="form-control" type="date">
-              <div *ngIf="submittedFuncionario && !successFuncionario && addForm.matricula.errors" >
-                <small class="invalid-feedback" style="display: inline;">A data de venda é obrigatório.</small>
+              <label for="input-seller_at" class="form-control-label">Data de Venda:</label>
+              <input formControlName="seller_at" id="input-seller_at" class="form-control" type="date">
+              <div *ngIf="submittedSales && !successSales && addForm.seller_at.errors" >
+                <p class="invalid-feedback" style="display: inline;">A data de venda é obrigatório.</p>
               </div>
           </div>
 
           <div class="form-group">
-            <label for="input-address" class="form-control-label">Observação:</label>
+            <label for="input-observation" class="form-control-label">Observação:</label>
             <textarea formControlName="observation" class="form-control" rows="2"> </textarea>
           </div>
 
           </form>
         </div>
         <div class="modal-footer">
-          <!-- <button type="button" class="btn btn-outline-dark" (click)="create()">Criar</button> -->
+          <button type="button" class="btn btn-outline-dark" (click)="create()">Criar</button>
+        </div>
+      </ng-template>
+
+      <ng-template #editVendas let-modal>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Editar Vendas</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editSalesForm">
+
+
+            <div class="form-group">
+              <label for="input-safra" class="form-control-label">Safra(*)</label>
+              <select formControlName="safra_id" id="input-safra" class="form-control">
+                <option  *ngFor="let safra of safras" [value]="safra?.id">{{ safra?.name }}</option>
+              </select>
+
+              <div *ngIf="submittedSales && !successSales && editForm.safra_id.errors">
+                <small  class="invalid-feedback" style="display: inline;" >A unidade é obrigatória.</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-area" class="form-control-label">Área Produtiva(*)</label>
+              <select formControlName="productive_area_id" id="input-area" class="form-control">
+                <option  *ngFor="let area of areas" [value]="area.id">{{ area?.name }}</option>
+              </select>
+
+              <div *ngIf="submittedSales && !successSales && editForm.productive_area_id.errors">
+                <small  class="invalid-feedback" style="display: inline;" >A área é obrigatória.</small>
+              </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="input-quantity" class="form-control-label">Quantidade(*):</label>
+                <input formControlName="quantity" id="quantity" class="form-control" type="text">
+                <div *ngIf="submittedSales && !successSales && editForm.quantity.errors" >
+                  <small class="invalid-feedback" style="display: inline;">A quantidade é obrigatória.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-price" class="form-control-label">Preço(*):</label>
+              <input formControlName="price" id="input-price" class="form-control" type="text">
+              <div *ngIf="submittedSales && !successSales && editForm.price.errors" >
+                <p class="invalid-feedback" style="display: inline;">O preço é obrigatório.</p>
+              </div>
+          </div>
+
+            <div class="form-group">
+              <label for="input-seller_at" class="form-control-label">Data de Venda:</label>
+              <input formControlName="seller_at" id="input-seller_at" class="form-control" type="date">
+              <div *ngIf="submittedSales && !successSales && editForm.seller_at.errors" >
+                <p class="invalid-feedback" style="display: inline;">A data de venda é obrigatório.</p>
+              </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input-observation" class="form-control-label">Observação:</label>
+            <textarea formControlName="observation" class="form-control" rows="2"> </textarea>
+          </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="update()">Salvar</button>
+        </div>
+      </ng-template>
+
+      <ng-template #modalConfirmation let-modal>
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-basic-title">Confirmação de Ação</h3>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            Deseja Remover Essa Venda?
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="modal.dismiss('Cross click')" class="btn bg-gradient-secondary mr-3 mr-auto text-left">
+            Cancelar
+          </button>
+          <button (click)="confirmationDelete(); modal.dismiss('Cross click')" type="button" class="btn bg-gradient-danger float-right">
+            Confimar
+          </button>
         </div>
       </ng-template>
 
