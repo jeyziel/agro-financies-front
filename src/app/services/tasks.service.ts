@@ -65,4 +65,9 @@ export class TasksService {
       .pipe(retry(1));
   }
 
+  public getTasksDones(){
+    return this.http.get<any>(`${this.api}/tasks-done`)
+    .pipe(retry(1));
+  }
+
 }

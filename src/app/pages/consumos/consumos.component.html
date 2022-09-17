@@ -25,32 +25,44 @@
             <table class="table align-items-center table-flush">
               <thead class="thead-light">
                 <tr>
-                  <th scope="col">Nº</th>
-                  <th scope="col">Fornecedor</th>
-                  <th scope="col">Pagamento</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Data de Pagamento</th>
-                  <th scope="col"></th>
+                  <th scope="col">Produto</th>
+                  <th scope="col">Quantidade</th>
+                  <th scope="col">Preço</th>
+                  <th scope="col">Área Produtiva</th>
+                  <th scope="col">Safra</th>
+                  <th scope="col">Colaborador</th>
+                  <th scope="col">Data</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let consumo of consumos">
                     <td>
-                      #1
+                      <span>{{ consumo.product_name }}</span>
+                      <small class="inline-block">{{ consumo.product_category_name }}</small>
                     </td>
                     <td>
-                     Rei do Adubo
+                      {{ consumo.quantity }}
                     </td>
                     <td>
-                        À VISTA
+                      {{ consumo.total | currency: 'BRL':true }}
                     </td>
                     <td>
-                      R$ 800,00
+                      {{ consumo.productive_area_name }}
                     </td>
                     <td>
-                        21/01/2022
+                      {{ consumo.safra_name }}
                     </td>
-                   
+                    <td>
+                      {{ consumo.employee_name }}
+                    </td>
+                
+                    <td>
+                      {{ consumo.consumption_at | date: 'dd/MM/yyyy' }}
+                    </td>
+
+                 
+                  
                     <td class="text-right">
                       <div ngbDropdown placement="bottom-right">
                         <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
@@ -90,33 +102,41 @@
               <table class="table align-items-center table-dark table-flush">
                 <thead class="thead-dark">
                   <tr>
-                    <th scope="col">Nº</th>
-                    <th scope="col">Fornecedor</th>
-                    <th scope="col">Pagamento</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Data de Pagamento</th>
-                    <th scope="col"></th>
+                    <th scope="col">Atividade</th>
+                    <th scope="col">Área</th>
+                    <th scope="col">Unidade</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Colaborador</th>
+                    <th scope="col">Data</th>
+                    <!-- <th></th> -->
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr *ngFor="let taskDone of tasksDone">
                       <td>
-                        #1
+                        {{ taskDone.task_name }}
                       </td>
                       <td>
-                       Rei do Adubo
+                        {{ taskDone.productive_area_name }}
                       </td>
                       <td>
-                          À VISTA
+                       
                       </td>
                       <td>
-                        R$ 800,00
+                        {{ taskDone.quantity }} x <small>{{ taskDone.price  | currency: 'BRL':true }}</small>
                       </td>
                       <td>
-                          21/01/2022
+                        {{ (taskDone.price *  taskDone.quantity) | currency: 'BRL':true }}
                       </td>
+                      <td>
+                        {{ taskDone.employee_name }}
+                    </td>
+                    <td>
+                      {{ taskDone.done_at | date: 'dd/MM/yyyy' }}
+                  </td>
                      
-                      <td class="text-right">
+                      <!-- <td class="text-right">
                         <div ngbDropdown placement="bottom-right">
                           <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
                             <i class="fas fa-ellipsis-v"></i>
@@ -126,7 +146,7 @@
                             <a class="dropdown-item" >Deletar</a>
                           </div>
                         </div>
-                      </td>
+                      </td> -->
                      
                   </tr>
                 </tbody>
@@ -147,57 +167,83 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form [formGroup]="addConsumoProdutoForm">
 
             <div class="form-group">
-              <label for="input-safra" class="form-control-label">Safra(*)</label>
-              <select id="input-safra" class="form-control">
-                <option>01-2022</option> 
-                <option>02-2022</option> 
+              <label for="input-safra" class="form-control-label">Safras(*)</label>
+              <select formControlName="safra_id" id="input-safra" class="form-control">
+                <option  *ngFor="let safra of safras" [value]="safra?.id">{{ safra?.name }}</option>
               </select>
-            </div>
-
-            <div class="form-group">
-              <label for="input-produto" class="form-control-label">Produto(*)</label>
-              <select id="input-produto" class="form-control">
-                <option>Esteco de BOI</option> 
-                <option>Esteco Prime</option> 
-              </select>
+              <div *ngIf="submittedConsumoProduto && !successConsumoProduto && c.safra_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">A safra é obrigatória.</small>
+              </div>
             </div>
 
 
             <div class="form-group">
-              <label for="input-area" class="form-control-label">Área Produtiva(*)</label>
-              <select id="input-area" class="form-control">
-                <option>A1</option> 
-                <option>A2</option> 
+              <label  for="input-area" class="form-control-label">Área Produtiva(*)</label>
+              <select formControlName="productive_area_id"  id="input-area" class="form-control">
+                <option *ngFor="let area of areas" [value]="area?.id">{{ area?.name }}</option> 
               </select>
+
+              <div *ngIf="submittedConsumoProduto && !successConsumoProduto && c.productive_area_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">A área é obrigatório.</small>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <label for="input-produto" class="form-control-label">Produtos(*)</label>
+              <select formControlName="product_id" id="input-produto" class="form-control">
+                <option *ngFor="let produto of produtos" [value]="produto?.id">{{ produto?.name }}</option> 
+              </select>
+
+              <div *ngIf="submittedConsumoProduto && !successConsumoProduto && c.product_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">O Produto é Obrigatório.</small>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <label for="input-data-consumo" class="form-control-label">Quantidade:</label>
+              <input formControlName="quantity" id="input-data-consumo" class="form-control" type="number">
+              <div *ngIf="submittedConsumoProduto && !successConsumoProduto && c.quantity.errors" >
+                <small class="invalid-feedback" style="display: inline;">A Quantidade é Obrigatória.</small>
+              </div>
             </div>
 
 
             <div class="form-group">
               <label for="input-colaborador" class="form-control-label">Colaborador(*)</label>
-              <select id="input-colaborador" class="form-control">
-                <option>Jeyziel Gama</option> 
-                <option>Tales Seabra</option> 
+              <select formControlName="employee_id" id="input-colaborador" class="form-control">
+               
+                <option *ngFor="let funcionario of funcionarios" [value]="funcionario?.id" >{{ funcionario?.name }}</option> 
               </select>
+
+              <div *ngIf="submittedConsumoProduto && !successConsumoProduto && c.employee_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">O funcionário é obrigatório.</small>
+              </div>
+
             </div>
 
             <div class="form-group">
                 <label for="input-data-consumo" class="form-control-label">Data de Consumo:</label>
-                <input id="input-data-consumo" class="form-control" type="date">
+                <input formControlName="consumption_at" id="input-data-consumo" class="form-control" type="date">
+                <div *ngIf="submittedConsumoProduto && !successConsumoProduto && c.consumption_at.errors" >
+                  <small class="invalid-feedback" style="display: inline;">A data de consumo é obrigatória.</small>
+                </div>
             </div>
 
             
             <div class="form-group">
               <label for="input-address" class="form-control-label">Observação:</label>
-              <textarea class="form-control" rows="2"> </textarea>
+              <textarea  formControlName="observation"class="form-control" rows="2"> </textarea>
             </div>
 
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="create()">Criar</button>
         </div>
     </ng-template>
 
@@ -280,7 +326,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Criar</button>
+          <button type="button" class="btn btn-outline-dark">Criar</button>
         </div>
     </ng-template>
 

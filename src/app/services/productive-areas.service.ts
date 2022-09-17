@@ -27,13 +27,15 @@ export class ProductiveAreasService {
     return this.http.delete<any>(`${this.api}/areas-produtivas/${id}`);
   }
 
-
-
   all() {
     return this.http.get<any>(`${this.api}/areas-produtivas`);
   }
 
   find(id: Number) {
     return this.http.get<any>(`${this.api}/areas-produtivas/${id}`);
+  }
+
+  units(){
+    return this.http.get<any>(`${this.api}/areas-unidades`);
   }
 }
