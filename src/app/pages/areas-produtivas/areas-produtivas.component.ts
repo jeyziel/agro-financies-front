@@ -1,9 +1,14 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { GoalService } from 'src/app/services/goals.service';
 import { ProductiveAreasService } from 'src/app/services/productive-areas.service';
+import { PrunningService } from 'src/app/services/prunning.service';
+import { SafrasService } from 'src/app/services/safras.service';
 import { VarietiesService } from 'src/app/services/varieties.service';
+
 
 @Component({
   selector: 'app-areas-produtivas',
@@ -18,12 +23,20 @@ export class AreasProdutivasComponent implements OnInit {
   public editAreasProdutivasForm : FormGroup;
 
 
-  public metaCustoForm: FormGroup;
-  public metaProdutividadeForm: FormGroup;
+  public metaForm: FormGroup;
+  public prunningForm: FormGroup;
 
 
   public submittedArea: Boolean;
   public successArea: Boolean;
+
+  public submittedMeta: Boolean = false;
+  public successMeta: Boolean = false;
+
+
+  public submittedPrunning = false
+  public successPrunning = false;
+
 
   public areaSelected: any;
 
@@ -39,11 +52,16 @@ export class AreasProdutivasComponent implements OnInit {
   public metas_custo;
   public metas_produtividade;
 
+  private infoArea;
+
  
   constructor(
     private modalService: NgbModal,
     private productiveAreaService: ProductiveAreasService,
     private varietiesService: VarietiesService,
+    private safraService: SafrasService,
+    private goalsService: GoalService,
+    private prunningService: PrunningService,
     private toastr: ToastrService
   ) {
 
@@ -78,18 +96,24 @@ export class AreasProdutivasComponent implements OnInit {
       planting_at: new FormControl(null, [ Validators.nullValidator]),
     })
 
-    this.metaCustoForm = new FormGroup({
+    this.metaForm = new FormGroup({
       safra_id: new FormControl(null, [Validators.required]),
       value: new FormControl(null, [Validators.required])
     })
 
-    this.metaProdutividadeForm = new FormGroup({
+   
+
+    this.prunningForm = new FormGroup({
       safra_id: new FormControl(null, [Validators.required]),
-      value: new FormControl(null, [Validators.required])
+      prunning_at: new FormControl(null, [Validators.required])
     })
+
 
     this.getProductiveAreas()
     this.getVarieties()
+
+    this.getSafras();
+    
 
   }
 
@@ -100,6 +124,23 @@ export class AreasProdutivasComponent implements OnInit {
   get editForm(){
     return this.editAreasProdutivasForm.controls
   }
+
+  get pf(){
+    return this.prunningForm.controls
+  }
+
+  get meta(){
+    return this.metaForm.controls
+  }
+
+  selectedOption(index){
+
+    console.log(index)
+    return index == 0;
+
+
+  }
+ 
 
   create(){
     this.submittedArea = true
@@ -146,6 +187,10 @@ export class AreasProdutivasComponent implements OnInit {
 
   }
 
+  setArea(area){
+    this.areaSelected = area
+  }
+
 
   update(){
 
@@ -162,14 +207,12 @@ export class AreasProdutivasComponent implements OnInit {
     this.productiveAreaService.edit(this.areaSelected?.id, area)
       .subscribe(area => {
 
-        this.addAreasProdutivasForm.reset()
-        this.addAreasProdutivasForm.setErrors(null)
-
         this.submittedArea = false
         this.successArea = true;
 
         this.toastr.info('Area Produtiva Atualizada', 'SUCESSO');
         this.getProductiveAreas();
+        this.getInfoArea(this.areaSelected?.id)
 
       },
       err => {
@@ -205,6 +248,97 @@ export class AreasProdutivasComponent implements OnInit {
 
   }
 
+  async getInfoArea(id: Number){
+
+    await  this.productiveAreaService.infoArea(id)
+      .subscribe( infoArea => {
+        this.infoArea = infoArea
+      },
+      err => {
+        this.toastr.error("Falha ao buscar informações da Area Produtiva. Tente novamente!", "ERRO", {positionClass: "toast-top-right"})
+      })
+
+  }
+
+  getSafras(){
+
+    this.safraService.all()
+      .subscribe( safras => {
+        this.safras = safras
+      },
+      err => {
+        this.toastr.error("Falha ao buscar informações de Safras. Tente novamente!", "ERRO", {positionClass: "toast-top-right"})
+      })
+
+  }
+
+  createPrunning(){
+
+    this.submittedPrunning = true
+    this.successPrunning = false;
+
+    if (this.prunningForm.invalid)
+      return;
+
+    
+    let prunning = this.prunningForm.value
+    prunning['productive_area_id'] = this.areaSelected?.id;
+
+
+    this.prunningService.create(prunning)
+      .subscribe(prunning => {
+    
+        this.prunningForm.reset()
+        this.prunningForm.setErrors(null)
+
+        this.submittedPrunning = false
+        this.successPrunning = true;
+
+        this.toastr.success("Poda definida com Sucesso!", "SUCESSO")
+
+
+      }, err => {
+        this.toastr.error("Falha definir a data da PODA. Tente novamente!", "ERRO")
+      })
+
+
+
+  }
+
+  createMeta(type: string){
+
+    this.submittedMeta = true
+    this.successMeta = false;
+
+    if (this.metaForm.invalid)
+      return;
+
+    
+    let meta = this.metaForm.value
+    meta['productive_area_id'] = this.areaSelected?.id;
+    meta['type'] = type
+
+
+    this.goalsService.create(meta)
+      .subscribe(prunning => {
+    
+        this.submittedMeta = false
+        this.successMeta = true;
+
+        this.toastr.success("Meta definida com Sucesso!", "SUCESSO")
+
+        this.getInfoArea(this.areaSelected?.id);
+
+
+      }, err => {
+        this.toastr.error("Falha definir a Meta. Tente novamente!", "ERRO")
+      })
+
+
+
+  }
+
+
 
   removerAreaProdutiva(id: Number){
 
@@ -229,10 +363,42 @@ export class AreasProdutivasComponent implements OnInit {
     this.fn(...this.paramsDelete);
   }
 
-  open(content, fn = null, ...params) {
+   open(content, fn = null, ...params) {
+
+    console.log('oi')
+
+    setTimeout(() => {}, 500);
+
+
+
+
+    const safra_id = this?.safras[0]?.id 
 
     
+
+    this.prunningForm.controls['safra_id'].setValue(safra_id);
+    this.metaForm.controls['safra_id'].setValue(safra_id);
+
+    const typeMeta = fn;
+
+    if (typeMeta == 'PRUNNING')
+      this.changePrunning(safra_id)
+
+    if (typeMeta == 'CUSTO')
+      this.changeMetaCusto(safra_id)
+
+    if (typeMeta == 'PRODUTIVIDADE')
+      this.changeMetaCusto(safra_id)
+
+    
+
    
+
+   
+   // this.a.controls['safra_id'].setValue(this?.safras?.slice(-1)[0]?.prunning_at);
+    
+
+
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', 'centered': true }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
 
@@ -243,6 +409,55 @@ export class AreasProdutivasComponent implements OnInit {
     //delete params
     this.fn = fn;
     this.paramsDelete = params;
+
+    
+
+
+
+
+  }
+
+  changePrunning(safra_id: Number) {
+
+
+    
+    const prunning = this.infoArea[0]?.prunnings?.filter(item => item.safra_id == safra_id)
+
+
+
+    if (prunning){
+      this.prunningForm.controls['prunning_at'].setValue(prunning[0]?.prunning_at)
+    }
+
+  
+  }
+
+  changeMetaProdutividade(safra_id: Number) {
+
+    
+    const produtividade = this.infoArea[0]?.goals?.filter(
+      item => item.safra_id == safra_id && item.type == 'PRODUTIVIDADE'
+    )
+
+    if (produtividade){
+      this.metaForm.controls['value'].setValue(produtividade[0]?.value)
+    }
+
+  
+  }
+
+  changeMetaCusto(safra_id: Number) {
+
+    
+    const custo = this.infoArea[0]?.goals?.filter(
+      item => item.safra_id == safra_id && item.type == 'CUSTO'
+    )
+
+    if (custo){
+      this.metaForm.controls['value'].setValue(custo[0]?.value)
+    }
+
+  
   }
 
   private getDismissReason(reason: any): string {
@@ -251,12 +466,21 @@ export class AreasProdutivasComponent implements OnInit {
     this.successArea = false;
     this.submittedArea = false;
 
+    this.successMeta  = false;
+    this.submittedMeta = false;
+
 
     this.addAreasProdutivasForm.reset()
     this.addAreasProdutivasForm.setErrors(null)
     
     this.editAreasProdutivasForm.reset()
     this.editAreasProdutivasForm.setErrors(null)   
+
+    this.metaForm.reset()
+    this.metaForm.setErrors(null)  
+
+    this.prunningForm.reset()
+    this.prunningForm.setErrors(null)  
 
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';

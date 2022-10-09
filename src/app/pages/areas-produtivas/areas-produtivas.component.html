@@ -45,7 +45,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let area of areas">
+                <tr *ngFor="let area of areas" >
                     <td>
                       {{ area?.name }}
                     </td>
@@ -71,9 +71,9 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" (click)="open(addMetaCusto)" >Meta de Custo</a>
-                          <a class="dropdown-item"  (click)="open(addMetaProdutividade)">Meta de Produtividade</a>
-                          <a class="dropdown-item" (click)="open(addMetaCusto)" >Podas</a>
+                          <a class="dropdown-item" (click)="setArea(area); getInfoArea(area?.id);  open(addMetaCusto, 'CUSTO')" >Meta de Custo</a>
+                          <a class="dropdown-item"  (click)="setArea(area); getInfoArea(area?.id);open(addMetaProdutividade, 'PRODUTIVIDADE')">Meta de Produtividade</a>
+                          <a class="dropdown-item" (click)="setArea(area); getInfoArea(area?.id); open(addPoda)" >Podas</a>
                           <a class="dropdown-item" (click)="onEditAreasProdutivas(area); open(editAreaProdutiva);"  >Editar</a>
                           <a class="dropdown-item"  (click)="open(modalConfirmation, removerAreaProdutiva, area?.id)" >Deletar</a>
                         </div>
@@ -234,6 +234,42 @@
       </div>
     </ng-template>
 
+    <ng-template #addPoda let-modal>
+
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Definir Poda - {{ areaSelected?.name}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="prunningForm">
+
+          <div class="form-group">
+            <label for="input-variedade" class="form-control-label">Safras(*)</label>
+            <select formControlName="safra_id"  (change)="changePrunning($event.target.value)" class="form-control" id="input-variedade">
+              <option *ngFor="let safra of safras" [value]="safra?.id">{{ safra?.name }}</option> 
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="input-poda" class="form-control-label">Data da Poda(*)</label>
+            <input formControlName="prunning_at" class="form-control" type="date" placeholder="dd/mm/aaaa">
+          
+            <div *ngIf="submittedPrunning && !successPrunning && pf.prunning_at.errors" >
+              <small class="invalid-feedback" style="display: inline;">O campo é obrigatório.</small>
+            </div> 
+          
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="createPrunning()">Salvar</button>
+      </div>
+    </ng-template>
+
+
     <ng-template #addMetaCusto let-modal>
 
       <div class="modal-header">
@@ -243,25 +279,29 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="metaForm">
 
           <div class="form-group">
             <label for="input-variedade" class="form-control-label">Safras(*)</label>
-            <select  class="form-control" id="input-variedade">
-              <option>2022-01</option> 
-              <option>2022-02</option> 
+            <select formControlName="safra_id" (change)="changeMetaCusto($event.target.value)" class="form-control" id="input-safra" >
+              <option *ngFor="let safra of safras;" [value]="safra?.id">{{ safra?.name }}-{{ i }}</option> 
             </select>
           </div>
 
           <div class="form-group">
             <label for="input-variedade" class="form-control-label">Meta de Custo(*)</label>
-            <input class="form-control" type="text" placeholder="R$">
+            <input formControlName="value" class="form-control" type="text" placeholder="R$">
+
+            <div *ngIf="submittedMeta && !successMeta && meta.value.errors" >
+              <small class="invalid-feedback" style="display: inline;">O campo é obrigatório.</small>
+            </div> 
+
           </div>
 
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        <button type="button" class="btn btn-outline-dark" (click)="createMeta('CUSTO')">Salvar</button>
       </div>
     </ng-template>
 
@@ -274,25 +314,29 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="metaForm">
 
           <div class="form-group">
             <label for="input-variedade" class="form-control-label">Safras(*)</label>
-            <select  class="form-control" id="input-variedade">
-              <option>2022-01</option> 
-              <option>2022-02</option> 
+            <select formControlName="safra_id" (change)="changeMetaProdutividade($event.target.value)" class="form-control" id="input-variedade">
+              <option *ngFor="let safra of safras" [value]="safra?.id"  [selected]="i == 1">{{ safra?.name }}</option> 
             </select>
           </div>
 
           <div class="form-group">
             <label for="input-variedade" class="form-control-label">Meta de Produtividade(*)</label>
-            <input class="form-control" type="text" placeholder="R$">
+            <input  formControlName="value" class="form-control" type="text" placeholder="R$">
+
+            <div *ngIf="submittedMeta && !successMeta && meta.value.errors" >
+              <small class="invalid-feedback" style="display: inline;">O campo é obrigatório.</small>
+            </div> 
+
           </div>
 
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        <button type="button" class="btn btn-outline-dark" (click)="createMeta('PRODUTIVIDADE')">Save</button>
       </div>
     </ng-template>
 

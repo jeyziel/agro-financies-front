@@ -38,4 +38,8 @@ export class ProductiveAreasService {
   units(){
     return this.http.get<any>(`${this.api}/areas-unidades`);
   }
+
+  infoArea(id: Number){
+    return this.http.get<any>(`${this.api}/report/area-produtiva/${id}/info`);
+  }
 }

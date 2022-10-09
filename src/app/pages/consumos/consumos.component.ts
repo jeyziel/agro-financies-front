@@ -29,6 +29,9 @@ export class ConsumosComponent implements OnInit {
   public submittedConsumoProduto: Boolean
   public successConsumoProduto: Boolean
 
+  public submittedConsumoAtividade: Boolean
+  public successConsumoAtividade: Boolean
+
   public produtos;
   public areas;
   public safras;
@@ -40,7 +43,6 @@ export class ConsumosComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private consumptionService: ConsumptionService,
-    private tasksDoneService: TasksService,
     private tasksService: TasksService,
     private productsService: ProductsService,
     private safraService: SafrasService,
@@ -56,11 +58,7 @@ export class ConsumosComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.addAtividades = new FormGroup({
-      name: new FormControl(null, [Validators.required]),
-      price_default: new FormControl(null, [Validators.required]),
-      task_category_id: new FormControl(null, [Validators.required])
-    })
+    
 
     this.addConsumoProdutoForm = new FormGroup({
       product_id: new FormControl(null, [Validators.required]),
@@ -71,6 +69,19 @@ export class ConsumosComponent implements OnInit {
       consumption_at: new FormControl(null, [Validators.required])
     });
 
+    this.addConsumoAtividadeForm = new FormGroup({
+      task_id: new FormControl(null, [Validators.required]),
+      productive_area_ids: new FormControl(null, [Validators.required]),
+      area_unit_id: new FormControl(null, [Validators.required]),
+      safra_id: new FormControl(null, [Validators.required]),
+      quantity: new FormControl(1, [Validators.required]),
+      price: new FormControl(null, [Validators.required]),
+      employee_id: new FormControl(null, [Validators.required]),
+      done_at: new FormControl(null, [Validators.required])
+    });
+
+    
+
 
     this.getConsumos()
     this.getTasksDone()
@@ -80,12 +91,27 @@ export class ConsumosComponent implements OnInit {
     this.getSafras()
     this.getAreasProdutivas()
     this.getFuncionarios();
+    this.getAtividades();
+    this.getAreasUnidade();
+
+    this.addConsumoAtividadeForm.get('task_id').valueChanges.subscribe(value => {
+ 
+
+      const atividade = this.atividades.filter(atividade => atividade.id == value)
+      console.log(atividade)
+
+      this.addConsumoAtividadeForm.controls['price'].setValue(atividade[0]?.price_default)
+   })
 
     //this.addConsumoProdutoForm.controls['safra_id'].setValue(this.safras[0], {onlySelf: true});
   }
 
   get c(){
     return this.addConsumoProdutoForm.controls
+  }
+
+  get t(){
+    return this.addConsumoAtividadeForm.controls
   }
 
   
@@ -116,10 +142,39 @@ export class ConsumosComponent implements OnInit {
 
       },
       err => {
-        this.toastr.error('Falha ao cadastrar Atividade ', 'SUCESSO');
+        this.toastr.error('Falha ao cadastrar Atividade ', 'ERRO');
       })
 
+  }
 
+  consumirAtividade(){
+
+    this.submittedConsumoAtividade = true
+    this.successConsumoAtividade = false;
+
+    if (this.addConsumoAtividadeForm.invalid)
+      return;
+
+    
+    const consumo = this.addConsumoAtividadeForm.value
+
+    this.tasksService.createTaskDone(consumo)
+      .subscribe(consumo => {
+
+
+        this.addConsumoAtividadeForm.reset()
+        this.addConsumoAtividadeForm.setErrors(null)
+
+        this.submittedConsumoAtividade = false
+        this.successConsumoAtividade = true;
+
+        this.toastr.success('Atividade Registrada', 'SUCESSO');
+        this.getConsumos();
+
+      },
+      err => {
+        this.toastr.error('Falha ao Registrar Atividade ', 'SUCESSO');
+      })
 
 
 
@@ -140,12 +195,12 @@ export class ConsumosComponent implements OnInit {
 
   getTasksDone(){
 
-    this.tasksDoneService.getTasksDones()
+    this.tasksService.getTasksDones()
       .subscribe(tasksDone => {
         this.tasksDone = tasksDone
       },
       err => {
-
+        this.toastr.error('Falha ao buscar Atividades Realizadas. Tente Novamente!', 'ERRO')
       })
   }
 
@@ -225,6 +280,15 @@ export class ConsumosComponent implements OnInit {
         this.toastr.error('Falha ao buscar Atividades. Tente Novamente!', 'ERRO')
       })
 
+
+  }
+
+
+  onChangeAtividade(atividade){
+
+    console.log(atividade)
+
+    this.addConsumoAtividadeForm.controls['price'].setValue(atividade?.price_default);
 
   }
 

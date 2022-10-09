@@ -1,140 +1,44 @@
-<div class="header bg-gradient-green pb-8 pt-5 pt-md-8">
-  <div class="container-fluid">
-    <div class="header-body">
-      <!-- Card stats -->
-      <div class="row">
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Custo Total</h5>
-                  <span class="h4 font-weight-bold mb-0">R$ 21.843,00</span>
-                </div>
-                <div class="col-auto">
-                  <div class="icon icon-shape bg-green text-white rounded-circle shadow">
-                    <i class="fas fa-chart-bar"></i>
-                  </div>
-                </div>
-              </div>
-              <p class="mt-3 mb-0 text-muted text-sm">
-                 <span class="text-success mr-2"></span>
-                <span class="text-nowrap"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Data da Poda</h5>
-                  <span class="h4 font-weight-bold mb-0">23/03/2022</span>
-                </div>
-                <div class="col-auto">
-                  <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                    <i class="fas fa-chart-pie"></i>
-                  </div>
-                </div>
-              </div>
-              <p class="mt-3 mb-0 text-muted text-sm">
-                 <span class="text-success mr-2"></span>
-                <span class="text-nowrap"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Custo/Meta</h5>
-                  <span class="h4 font-weight-bold mb-0">109%</span>
-                </div>
-                <div class="col-auto">
-                  <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                    <i class="fas fa-percent"></i>
-                  </div>
-                </div>
-              </div>
-              <p class="mt-3 mb-0 text-muted text-sm">
-                <!-- <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> Meta</span> -->
-                <span class="text-nowrap"> Meta( R$ 20000,00 )</span>
-              </p>
+<div class="header bg-gradient-green pb-3 pt-3 pt-md-8">
 
-            </div>
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-7">
+      <form [formGroup]="dashboardFilterForm" >
+     
+        <div class="form-row">
+
+          <div class="form-group col-5">
+            <label  for="input-area" class="col-sm-2 label-dashboard">Área</label>
+            <select formControlName="productive_area_id" class="form-control col-12">
+              <option value="0">Todos</option>
+              <option *ngFor="let area of areas" [value]="area?.id">{{ area?.name }}</option>
+            </select>
           </div>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Produção</h5>
-                  <span class="h2 font-weight-bold mb-0">12882 Kg</span>
-                </div>
-                <div class="col-auto">
-                  <div class="icon icon-shape bg-info text-white rounded-circle shadow">
-                    <i class="fas fa-percent"></i>
-                  </div>
-                </div>
-              </div>
-              <p class="mt-3 mb-0 text-muted text-sm">
-                <!-- <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> R$</span> -->
-                <span class=" mr-2 text-nowrap">R$ 18000,00</span>
-              </p>
-            </div>
+
+          <div class="form-group col-4">
+            <label  for="input-area" class="col-sm-2 label-dashboard">Safra</label>
+            <select formControlName="safra_id" class="form-control col-12">
+              <option *ngFor="let safra of safras"  [value]="safra?.id">{{ safra?.name }}</option>
+            </select>
           </div>
+
+          <div class="col-md-3 form-group mt-4">
+            <button (click)="enabledDashboard()" class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
+          </div>
+         
         </div>
-      </div>
+
+        
+
+        
+
+      </form>
     </div>
+
   </div>
 </div>
 
-<div class="container-fluid mt--7">
+<app-individual *ngIf="!enabledGeral" [filters]="filters"></app-individual>
 
-  <div class="row mt-3">
-    <div class="col-12">
-      <app-informacoes-gerais></app-informacoes-gerais>
+<app-geral *ngIf="enabledGeral && loading" [filters]="filters"></app-geral>
 
-    </div>
-  </div>
-
-  <div class="row mt-2">
-    <div class="col-xl-6 mb-5 mb-xl-0">
-      <app-custo-categorias></app-custo-categorias>
-    </div>
-    <div class="col-xl-6">
-      <app-barcode></app-barcode>
-    </div>
-  </div>
-
-  <div class="row mt-2">
-    <div class="col-12">
-        <app-barcode></app-barcode>
-    </div>
-  </div>
-
-  <div class="row mt-2">
-    <div class="col-xl-5 mb-5 mb-xl-0">
-        <app-itens-impacto></app-itens-impacto>
-    </div>
-
-    <div class="col-xl-7 mb-5 mb-xl-0">
-        <app-custo-area></app-custo-area>
-    </div>
-
-
-
-  </div>
-
-  <div class="row mt-2">
-    <div class="col-12">
-      <app-informacoes-detalhadas></app-informacoes-detalhadas>
-    </div>
-  </div>
-
- 
-</div>

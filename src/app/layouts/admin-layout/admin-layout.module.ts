@@ -15,6 +15,8 @@ import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { InterceptorModule } from 'src/app/interceptors/interceptor.module';
 import {ComponentsModule} from '../../components/components.module';
+import { GeralComponent } from 'src/app/pages/dashboard/geral/geral.component';
+import { IndividualComponent } from 'src/app/pages/dashboard/individual/individual.component';
 // import { ToastrModule, ToastrService } from 'ngx-toastr';
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -22,6 +24,7 @@ import {ComponentsModule} from '../../components/components.module';
     imports: [
         CommonModule,
         RouterModule.forChild(AdminLayoutRoutes),
+        ReactiveFormsModule,
         FormsModule,
         HttpClientModule,
         NgbModule,
@@ -35,7 +38,9 @@ import {ComponentsModule} from '../../components/components.module';
     UserProfileComponent,
     TablesComponent,
     IconsComponent,
-    MapsComponent
+    MapsComponent,
+    GeralComponent,
+    IndividualComponent,
   ]
 
 })

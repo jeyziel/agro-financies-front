@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   public submitted: Boolean;
   public wrongLogin: Boolean;
 
-  constructor(private authService: AuthService, private readonly fb: FormBuilder) {
+  constructor(
+    private authService: AuthService, 
+    private readonly fb: FormBuilder,
+    private toastr: ToastrService,
+    private router: Router
+    ) {
     
     this.loginForm = new FormGroup({
       email: new FormControl(null,[Validators.required, Validators.email]),
@@ -61,12 +68,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.login(credencials)
       .subscribe(
         res => {
-          console.log(res)
+          
           this.authService.add(res)
+          this.toastr.success('Login Realizado com sucesso', 'BEM VINDO!');
+
+          this.router.navigate(['/dashboard'])
+
+          
         },
         err => {
           this.wrongLogin = true
-          console.log(err)
         }
       )
 

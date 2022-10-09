@@ -121,7 +121,7 @@
                         {{ taskDone.productive_area_name }}
                       </td>
                       <td>
-                       
+                        {{ taskDone.unit_name }}
                       </td>
                       <td>
                         {{ taskDone.quantity }} x <small>{{ taskDone.price  | currency: 'BRL':true }}</small>
@@ -256,77 +256,113 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form [formGroup]="addConsumoAtividadeForm">
+
+           
+            <div class="form-group">
+              <label for="input-safra" class="form-control-label">Safras(*)</label>
+              <select formControlName="safra_id" id="input-safra" class="form-control">
+                <option  *ngFor="let safra of safras" [value]="safra?.id">{{ safra?.name }}</option>
+              </select>
+              <div *ngIf="submittedConsumoAtividade && !successConsumoAtividade && t.safra_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">A safra é obrigatória.</small>
+              </div>
+            </div>
+
 
             <div class="form-group">
-              <label for="input-safra" class="form-control-label">Safra(*)</label>
-              <select id="input-safra" class="form-control">
-                <option>01-2022</option> 
-                <option>02-2022</option> 
+              <label  for="input-area" class="form-control-label">Área Produtiva(*)</label>
+              <select formControlName="productive_area_ids"  id="input-area" class="form-control">
+                <option *ngFor="let area of areas" [value]="area?.id">{{ area?.name }}</option> 
               </select>
+
+              <div *ngIf="submittedConsumoAtividade && !successConsumoAtividade && t.productive_area_ids.errors" >
+                <small class="invalid-feedback" style="display: inline;">A área é obrigatório.</small>
+              </div>
+
             </div>
 
             <div class="form-group">
               <label for="input-produto" class="form-control-label">Atividade(*)</label>
-              <select id="input-produto" class="form-control">
-                <option>Raleio</option> 
-                <option>Salário</option> 
-              </select>
-            </div>
+              <select  formControlName="task_id" id="input-produto" class="form-control">
+                <option *ngFor="let atividade of atividades"  [value]="atividade?.id">{{ atividade?.name }}</option> 
+               
 
 
-            <div class="form-group">
-              <label for="input-area" class="form-control-label">Área Produtiva(*)</label>
-              <select id="input-area" class="form-control">
-                <option>A1</option> 
-                <option>A2</option> 
               </select>
+
+               
+              <div *ngIf="submittedConsumoAtividade && !successConsumoAtividade && t.task_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">A área é obrigatório.</small>
+              </div>
             </div>
 
             <div class="form-group">
               <label for="input-colaborador" class="form-control-label">Unidade(*)</label>
-              <select id="input-colaborador" class="form-control">
-                <option>Geral</option> 
-                <option>Linha</option> 
-                <option>Válvula</option> 
+              <select formControlName="area_unit_id" id="input-colaborador" class="form-control">
+                <option *ngFor="let unidade of unidadesArea" [value]="unidade?.id">
+                  {{ unidade?.name }}
               </select>
+              <div *ngIf="submittedConsumoAtividade && !successConsumoAtividade && t.area_unit_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">A unidade é obrigatório.</small>
+              </div>
             </div>
 
             <div class="form-group">
               <label for="input-quantidade" class="form-control-label">Quantidade:</label>
-              <input id="input-quantidade" class="form-control" type="number">
+              <input formControlName="quantity" id="input-quantidade" class="form-control" type="number" [value]="quantity">
+
+              <div *ngIf="submittedConsumoAtividade && !successConsumoAtividade && t.quantity.errors" >
+                <small class="invalid-feedback" style="display: inline;">A quantidade é obrigatória.</small>
+              </div>
+
             </div>
 
            
             <div class="form-group">
               <label for="input-colaborador" class="form-control-label">Colaborador(*)</label>
-              <select id="input-colaborador" class="form-control">
-                <option>Jeyziel Gama</option> 
-                <option>Tales Seabra</option> 
+              <select formControlName="employee_id" id="input-colaborador" class="form-control">
+               
+                <option *ngFor="let funcionario of funcionarios" [value]="funcionario?.id" >{{ funcionario?.name }}</option> 
               </select>
+
+              <div *ngIf="submittedConsumoAtividade && !successConsumoAtividade && t.employee_id.errors" >
+                <small class="invalid-feedback" style="display: inline;">O campo é obrigatório.</small>
+              </div>
+
             </div>
 
             <div class="form-group">
-              <label for="input-preco" class="form-control-label">Preço(*):</label>
-              <input id="input-preco" class="form-control" type="text">
+              <label for="input-preco" class="form-control-label">Preço Unitário(*):</label>
+              <input formControlName="price" placeholder="R$" id="input-preco" class="form-control" type="text">
+            
+              <div *ngIf="submittedConsumoAtividade && !successConsumoAtividade && t.price.errors" >
+                <small class="invalid-feedback" style="display: inline;">O Preço é obrigatório.</small>
+              </div>
+            
             </div>
 
             <div class="form-group">
                 <label for="input-data-consumo" class="form-control-label">Data da Atividade:</label>
-                <input id="input-data-consumo" class="form-control" type="date">
+                <input formControlName="done_at" id="input-data-consumo" class="form-control" type="date">
+
+                <div *ngIf="submittedConsumoAtividade && !successConsumoAtividade && t.done_at.errors" >
+                  <small class="invalid-feedback" style="display: inline;">O Data é obrigatória.</small>
+                </div>
+
             </div>
 
             
             <div class="form-group">
               <label for="input-address" class="form-control-label">Observação:</label>
-              <textarea class="form-control" rows="2"> </textarea>
+              <textarea formControlName="observation" class="form-control" rows="2"> </textarea>
             </div>
 
 
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark">Criar</button>
+          <button (click)="consumirAtividade()" type="button" class="btn btn-outline-dark">Criar</button>
         </div>
     </ng-template>
 

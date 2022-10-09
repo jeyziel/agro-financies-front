@@ -46,7 +46,7 @@
                         {{ sale?.safra_name }} 
                     </td>
                     <td>
-                        {{ sale?.quantity }}
+                        {{ sale?.quantity }} Kg
                     </td>
                     <td>
                       {{ sale?.price | currency:'BRL':true }}
@@ -59,7 +59,7 @@
                     </td>
 
                     <td>
-                        {{ sale?.seller_at }}
+                        {{ sale?.seller_at | date: 'dd/MM/yyyy' }}
                     </td>
 
                     <td class="text-right">

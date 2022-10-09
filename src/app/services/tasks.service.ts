@@ -70,4 +70,9 @@ export class TasksService {
     .pipe(retry(1));
   }
 
+  public createTaskDone(params){
+    return this.http.post<any>(`${this.api}/tasks-done`, params)
+      .pipe(retry(1));
+  }
+
 }

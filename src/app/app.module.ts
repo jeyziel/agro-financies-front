@@ -37,6 +37,9 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { VendasComponent } from './pages/vendas/vendas.component';
+import { IndividualComponent } from './pages/dashboard/individual/individual.component';
+import { GeralComponent } from './pages/dashboard/geral/geral.component';
+
 
 registerLocaleData(localePt);
 
@@ -75,7 +78,8 @@ registerLocaleData(localePt);
     VendedoresComponent,
     DetailsComponent,
     SafrasComponent,
-    VendasComponent
+    VendasComponent,
+    
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
