@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { InformacoesGerais } from 'src/app/interfaces/dashboard/informacoes-gerais';
 
 @Component({
   selector: 'app-informacoes-gerais',
@@ -6,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./informacoes-gerais.component.scss']
 })
 export class InformacoesGeraisComponent implements OnInit {
+
+  @Input() informacoes : InformacoesGerais;
+
+  
+
 
   constructor() { }
 

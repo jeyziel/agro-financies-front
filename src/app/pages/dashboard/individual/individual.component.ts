@@ -1,6 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CustoCategoria } from 'src/app/interfaces/dashboard/custo-categorias';
+import { CustoMensal } from 'src/app/interfaces/dashboard/custo-mensal';
+
 import { IndicativoIndividual } from 'src/app/interfaces/dashboard/indicativos';
+import { InformacoesGerais } from 'src/app/interfaces/dashboard/informacoes-gerais';
 import { DashboardIndividualService } from 'src/app/services/dashboard-individual.service';
 
 @Component({
@@ -19,9 +23,14 @@ export class IndividualComponent implements OnInit {
   public vendas: any;
   public expensesByItens: any;
   public comsuptions: any;
+  public itensCustos: any;
+  public custoMensais: any;
 
 
   public indicativos: IndicativoIndividual
+  public informacoes_gerais: InformacoesGerais
+  public custo_categorias : CustoCategoria
+  public custo_mensal: CustoMensal 
 
 
   constructor(
@@ -40,18 +49,8 @@ export class IndividualComponent implements OnInit {
       safra_id: this.filters?.safra_id
     }
 
-    console.log(1)
 
     await this.allData(idArea, safra)
-
-    
-
-    console.log(2)
-    
-
-    console.log(this.infoArea)
-
-    console.log(3)
     
   }
 
@@ -63,21 +62,23 @@ export class IndividualComponent implements OnInit {
     const vendas =  await this.getVendas(idArea, safra)
     const custosCategoria =  await this.getCategoriaCustos(idArea, safra)
 
-    // // const custoMensais = await this.getCustoMensais(idArea, safra)
-    // // const itensCusto = await this.getItensCustos(idArea, safra)
+    const custoMensais = await this.getCustoMensais(idArea, safra)
+    const itensCusto = await this.getItensCustos(idArea, safra)
 
-
-
-    Promise.all([infoArea, vendas, custosCategoria]).then(
+    Promise.all([infoArea, vendas, custosCategoria, custoMensais, itensCusto]).then(
       data => {
         
         this.infoArea = data[0]
         this.vendas = data[1]
         this.custosCategoria = data[2]
+        this.custoMensais = data[3]
+        this.itensCustos = data[4]
 
         this.indicativos = this.makeIndicativos(this.infoArea, this.vendas, this.custosCategoria)
-
-        console.log(this.indicativos)
+        this.informacoes_gerais = this.makeInformacoesGerais(this.infoArea, this.vendas, this.custosCategoria)
+        this.custo_categorias = this.makeCategoriasCustos(custosCategoria)
+        this.custo_mensal = this.makeCustosMensais(custoMensais)
+    
 
 
       },
@@ -119,12 +120,87 @@ export class IndividualComponent implements OnInit {
 
   }
 
-  public makeInformacoesGerais(infoArea, vendas, categoriasCusto ){
+  public makeInformacoesGerais(infoArea, vendas, categoriasCusto ): InformacoesGerais{
 
 
+    const area = infoArea[0]
 
+    const objetivo_custo = area.goals.filter(item => item.type == "CUSTO")[0]?.value || 0
+    const total_custo = categoriasCusto?.map( item => item.total)
+      .reduce( (prev, curr ) => prev + curr, 0)
+
+
+    const objetivo_vendas = area.goals.filter(item => item.type == "PRODUTIVIDADE")[0]?.value || 0
+
+    const producao = {
+      valor: vendas[0]?.total ?? 0,
+      objetivo: objetivo_vendas ?? 0
+    }
+
+    const custo = {
+      valor: total_custo ?? 0,
+      objetivo: objetivo_custo ?? 0
+    }
+
+    return {
+      cultura: area?.variety?.culture?.name,
+      variedade: area?.variety?.name,
+      quantidade_linhas: area?.quantity_lines,
+      quantidade_plantas: area?.quantity_plants,
+      porta_enxerto: area?.porta_enxerto,
+      espacamento: area?.spacing,
+      tamanho: area?.tamanho,
+      data_plantio: area?.planting_at,
+      producao: producao,
+      custo: custo
+    }
 
   }
+
+  public makeCategoriasCustos(categoriasCusto) : CustoCategoria{
+
+
+    const total = categoriasCusto.reduce((curr, prev) =>  curr?.total + prev?.total, 0)
+
+
+    const categorias = categoriasCusto.map( categoria => {
+      name: categoria?.name
+      valor: categoria?.total
+      percentual: (categoria?.total / total).toFixed(2)
+    })
+
+    return categorias
+
+  }
+
+  public makeCustosMensais(custoMensais) : CustoMensal{
+
+    return custoMensais.map(item => {
+
+      mes: this.normalizeMonth(item)
+      total: item?.total
+
+    })
+
+  }
+
+
+  public normalizeMonth(custoMensais){
+
+    const split_month = custoMensais.split('-')
+    const mes = split_month[0]
+    const ano = split_month[1]
+
+    const meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
+
+    return `${meses[mes]}/${ano}`
+
+  }
+
+
+
+
+
 
 
 

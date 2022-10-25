@@ -18,15 +18,15 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr *ngFor="let categoria of custoCategorias">
         <th scope="row">
-          Mão de Obra
+          {{ categoria?.name }}
         </th>
         <td>
-          25%
+          {{ categoria?.percentual }}
         </td>
         <td>
-          R$ 1400,00
+          R$ {{ categoria?.valor }} 
         </td>
 
       </tr>

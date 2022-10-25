@@ -9,11 +9,19 @@
   <div class="card-body">
     <div class="row">
       <div class="col-6">
-        <span><b>Cultura:</b> Uva</span>
+        <p>Cultura: {{ informacoes?.cultura }} </p>
+        <p>Variedade: {{ informacoes?.variedade }} </p>
+        <p>Nº de linhas: {{ informacoes?.quantidade_linhas }} </p>
+        <p>Tamanho: {{ informacoes?.tamanho }} </p>
+        <p>Nº de plantas: {{ informacoes?.quantidade_plantas }} </p>
       </div>
 
       <div class="col-6">
-        <span><b>Espaçamento:</b> Uva</span>
+        <p>Espaçamento: {{ informacoes?.espacamento }} </p>
+        <p>Porta Enxerto: {{ informacoes?.porta_enxerto }} </p>
+        <p>Produção/Meta: {{ informacoes?.producao?.valor }} / {{ informacoes?.producao?.objetivo }} </p>
+        <p>Custo/Meta: {{ informacoes?.custo?.valor }} / {{ informacoes?.custo?.objetivo }} </p>
+        <p>Data de Plantio: {{ informacoes?.data_plantio }} </p>
       </div>
 
     </div>
