@@ -16,23 +16,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr *ngFor="let item of itens">
         <th scope="row">
-           Mão de Obra
+           {{ item.nome }}
         </th>
         <td>
-          R$ 1400,00
+          {{ item.total | currency:'BRL':true:'1.2-2' }}
         </td>
       </tr>
-      <tr>
-        <th scope="row">
-          Adubo
-        </th>
-        <td>
-          R$ 1300,00
-        </td>
-      </tr>
-
       </tbody>
     </table>
   </div>

@@ -17,11 +17,11 @@
       </div>
 
       <div class="col-6">
-        <p>Espaçamento: {{ informacoes?.espacamento }} </p>
+        <p><b>Espaçamento:</b> {{ informacoes?.espacamento }} </p>
         <p>Porta Enxerto: {{ informacoes?.porta_enxerto }} </p>
         <p>Produção/Meta: {{ informacoes?.producao?.valor }} / {{ informacoes?.producao?.objetivo }} </p>
-        <p>Custo/Meta: {{ informacoes?.custo?.valor }} / {{ informacoes?.custo?.objetivo }} </p>
-        <p>Data de Plantio: {{ informacoes?.data_plantio }} </p>
+        <p>Custo/Meta: {{ informacoes?.custo?.valor | currency:'BRL':true:'1.2-2' }} / {{ informacoes?.custo?.objetivo }} </p>
+        <p>Data de Plantio: {{ informacoes?.data_plantio | date: 'dd/MM/YYYY' }} </p>
       </div>
 
     </div>

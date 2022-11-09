@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {ChartOptions} from 'chart.js';
 
 @Component({
@@ -7,6 +7,9 @@ import {ChartOptions} from 'chart.js';
   styleUrls: ['./barcode.component.scss']
 })
 export class BarcodeComponent implements OnInit {
+
+  @Input() labels;
+  @Input() data;
 
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -17,10 +20,23 @@ export class BarcodeComponent implements OnInit {
   public barChartPlugins = [];
 
   public barChartData = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A', stack: 'a' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B', stack: 'a' }
+    //{ data: []},
+    // { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B', stack: 'a' }
   ];
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    console.log(this.labels)
+    console.log(this.data)
+
+    this.barChartLabels = this.labels
+    this.barChartData.push({
+      data: this.data,
+      label: 'Meses'
+    }) 
+
+
+
+  }
 
 }

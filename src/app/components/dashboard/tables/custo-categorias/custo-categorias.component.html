@@ -20,13 +20,13 @@
       <tbody>
       <tr *ngFor="let categoria of custoCategorias">
         <th scope="row">
-          {{ categoria?.name }}
+          {{ categoria?.nome }}
         </th>
         <td>
-          {{ categoria?.percentual }}
+          {{ categoria?.percentual }} %
         </td>
         <td>
-          R$ {{ categoria?.valor }} 
+           {{ categoria?.valor | currency:'BRL':true:'1.2-2' }} 
         </td>
 
       </tr>

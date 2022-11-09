@@ -18,8 +18,6 @@ export class Interceptor implements HttpInterceptor {
 
     intercept( request: HttpRequest<any>, next: HttpHandler ): Observable<HttpEvent<any>> {
 
-        console.log('entrei no interceptor')
-
         const token = this.authService.get('token')
 
         request = request.clone({
