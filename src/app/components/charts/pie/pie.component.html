@@ -1,14 +1,17 @@
-
-    <div class="chart">
-      <div style="display: block;">
-        <canvas baseChart
-                [datasets]="barChartData"
-                [labels]="barChartLabels"
-                [options]="barChartOptions"
-                [plugins]="barChartPlugins"
-                [legend]="barChartLegend"
-                [type]="barChartType">
-        </canvas>
+<div class="card  border">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <!-- <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6> -->
+        <h2 class="mb-0">Custos por Categoria (%)</h2>
       </div>
-
     </div>
+  </div>
+  <div class="card-body" >
+    <canvas  baseChart
+            [data]="pieChartData"
+            [type]="pieChartType"
+            [plugins]="pieChartPlugins">
+    </canvas>
+  </div>
+</div>

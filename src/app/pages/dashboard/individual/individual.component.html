@@ -116,7 +116,11 @@
         <app-custo-categorias [custoCategorias]="custo_categorias" ></app-custo-categorias>
       </div>
       <div class="col-xl-6">
-        <app-barcode></app-barcode>
+        <app-pie *ngIf="custo_categorias"
+          [labels]="getLabelsCustoCategoria()"
+          [data]="getDataCustoCategoria()" 
+          >
+        </app-pie>
       </div>
     </div>
   
@@ -129,7 +133,7 @@
       </div>
     </div>
   
-    <div class="row mt-2">
+    <!-- <div class="row mt-2">
       <div class="col-xl-5 mb-5 mb-xl-0">
           <app-itens-impacto [itens]="itensCustos"></app-itens-impacto>
       </div>
@@ -137,14 +141,11 @@
       <div class="col-xl-7 mb-5 mb-xl-0">
           <app-custo-area></app-custo-area>
       </div>
-  
-  
-  
-    </div>
+    </div> -->
   
     <div class="row mt-2">
       <div class="col-12">
-        <app-informacoes-detalhadas></app-informacoes-detalhadas>
+        <app-consumo-categoria></app-consumo-categoria>
       </div>
     </div>
   

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ChartOptions } from 'chart.js';
+import { Component, Input, OnInit } from '@angular/core';
+import { ChartData, ChartOptions, ChartType } from 'chart.js';
 
 
 @Component({
@@ -10,20 +10,38 @@ import { ChartOptions } from 'chart.js';
 export class PieComponent implements OnInit {
 
 
-  public barChartOptions: ChartOptions = {
-    responsive: true,
+  @Input() data;
+  @Input() labels;
+
+
+ 
+
+  public pieChartData: ChartData<'pie', number[], string | string[]> = {
+    labels: [],
+    datasets: [ {
+      data: []
+    } ]
   };
-  public barChartLabels  = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  public barChartType = 'pie';
-  public barChartLegend = true;
-  public barChartPlugins = [];
 
-  public barChartData = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A', stack: 'a' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B', stack: 'a' }
-  ];
+  public pieChartType: ChartType = 'pie';
+  public pieChartPlugins = [  ];
 
-  ngOnInit() {}
+
+ 
+
+  ngOnInit() {
+
+    console.log(this.labels)
+    console.log(this?.data)
+
+
+    this.pieChartData.labels = this.labels
+    this.pieChartData.datasets = [{
+      data: this.data
+    }]
+
+
+  }
 
 
 

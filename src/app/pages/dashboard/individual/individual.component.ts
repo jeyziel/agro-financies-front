@@ -183,6 +183,45 @@ export class IndividualComponent implements OnInit {
 
   }
 
+  getLabelsCustoCategoria(){
+
+
+    let labels = []
+
+    this.custo_categorias?.forEach((item: CustoCategoria) => {
+
+      labels.push(item?.nome)
+
+    });
+
+    console.log('labels', labels)
+
+    return labels
+
+  }
+
+  getDataCustoCategoria(){
+
+    const total = this.custo_categorias.map( item => Number(item?.valor))
+      .reduce( (prev, curr ) => prev + curr, 0)
+
+    let data = []
+
+    this.custo_categorias?.forEach((item: CustoCategoria) => {
+
+      let valor: Number = Number(item?.valor)
+      let percentual = parseFloat(((Number(valor) / total) * 100).toFixed(2))
+      data.push(percentual)
+
+    });
+
+
+    return data
+
+
+  }
+
+
   public makeCustosMensais(custoMensais) : CustoMensal[]{
 
 
