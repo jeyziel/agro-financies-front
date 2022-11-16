@@ -13,23 +13,23 @@
       <tr>
         <th scope="col">Área</th>
         <th scope="col">Custo</th>
-        <th scope="col">Prod.</th>
-        <th scope="col">Retorno.</th>
+        <th scope="col">Produção(Kg)</th>
+        <th scope="col">Retorno(R$).</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr *ngFor="let area of areas">
         <td>
-         VÁLVULA
+         {{ area?.name }}
         </td>
         <td>
-         R$ 21843,00
+         {{ area?.custo?.valor }}
         </td>
         <td>
-          15835 KG
+          {{ area?.producao?.quantidade | currency:'BRL':true:'1.2-2'   }}
         </td>
         <td>
-          R$ 5800,00
+          {{ area?.producao?.valor | currency:'BRL':true:'1.2-2'  }}
         </td>
 
       </tr>

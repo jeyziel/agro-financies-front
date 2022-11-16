@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConsumptionService } from 'src/app/services/consumption.service';
 
 @Component({
   selector: 'app-consumo-categoria',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConsumoCategoriaComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private comsuptionService: ConsumptionService
+  ) { }
 
+  
   ngOnInit(): void {
   }
+
+  
 
 }

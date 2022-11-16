@@ -14,23 +14,23 @@ export class DashboardGeralService {
   }
 
   public infoArea(params){
-    this.http.get<any>(`${environment.api_url}/info-area`, {params});
+    return this.http.get<any>(`${environment.api_url}/report/area-produtiva/info`, {params});
   }
 
   public custosCategoria(params){
-    this.http.get<any>(`${environment.api_url}/custos-categorias`, {params});
+    return this.http.get<any>(`${environment.api_url}/report/area-produtiva/custos-categorias`, {params});
   }
 
   public custosItens(params){
-    this.http.get<any>(`${environment.api_url}/custos-itens`, {params});
+    return this.http.get<any>(`${environment.api_url}/report/area-produtiva/custos-itens`, {params});
   }
 
   public custosMensais(params){
-    this.http.get<any>(`${environment.api_url}/custos-mensais`, {params});
+    return this.http.get<any>(`${environment.api_url}/report/area-produtiva/custos-mensais`, {params});
   }
 
   public vendas(params){
-    this.http.get<any>(`${environment.api_url}/vendas`, {params});
+    return this.http.get<any>(`${environment.api_url}/report/area-produtiva/vendas`, {params});
   }
 
 

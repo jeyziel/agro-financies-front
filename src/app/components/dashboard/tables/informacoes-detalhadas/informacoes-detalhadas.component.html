@@ -2,18 +2,19 @@
   <div class="card-header border-1">
     <div class="row align-items-center">
       <div class="col">
-        <h2 class="mb-0">Válvula 01 - Variedade Vitória (0,5 h)</h2>
+        <h2 class="mb-0">{{ area?.name }} - {{ area?.variedade }} ({{ area?.tamanho }}h)</h2>
       </div>
     </div>
   </div>
   <div class="card-body">
     <div class="row">
       <div class="col-4">
-        <p><b>Data da Poda:</b> 21/01/2022</p>
-        <p><b>Produção Registrada:</b> 50000</p>
-        <p><b>Produção Meta:</b> 40000</p>
-        <p><b>Custo Total:</b> 40000</p>
-        <p><b>Custo Meta:</b> 40000</p>
+        <p *ngIf="area?.data_poda"><b>Data da Poda:</b> {{ area?.data_poda | date: 'dd/MM/YYYY'  }}</p>
+        <p *ngIf="!area?.data_poda"><b>Data da Poda:</b> -- </p>
+        <p><b>Produção Registrada:</b> {{ area?.producao?.quantidade }}</p>
+        <p><b>Produção Meta:</b> {{ area?.producao?.objetivo | currency:'BRL':true:'1.2-2' }}</p>
+        <p><b>Custo Total:</b> {{ area?.custo?.valor | currency:'BRL':true:'1.2-2' }}</p>
+        <p><b>Custo Meta:</b> {{ area?.custo?.objetivo  | currency:'BRL':true:'1.2-2'}}</p>
       </div>
 
       <div class="col-8">
@@ -34,15 +35,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr *ngFor="let categoria of area?.custo?.categorias">
               <th scope="row">
-                Mão de Obra
+                {{ categoria?.name  }}
               </th>
               <td>
-                25%
+                {{ getPercentual(categoria?.total) || 0 }} %
               </td>
               <td>
-                R$ 1400,00
+                {{ categoria?.total |  currency:'BRL':true:'1.2-2' }}
               </td>
 
             </tr>

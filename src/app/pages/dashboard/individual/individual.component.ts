@@ -6,6 +6,7 @@ import { CustoMensal } from 'src/app/interfaces/dashboard/custo-mensal';
 
 import { IndicativoIndividual } from 'src/app/interfaces/dashboard/indicativos';
 import { InformacoesGerais } from 'src/app/interfaces/dashboard/informacoes-gerais';
+import { ConsumptionService } from 'src/app/services/consumption.service';
 import { DashboardIndividualService } from 'src/app/services/dashboard-individual.service';
 
 @Component({
@@ -36,12 +37,9 @@ export class IndividualComponent implements OnInit {
 
   constructor(
     private individualService : DashboardIndividualService,
+    private comsuptionService: ConsumptionService,
     private toastr: ToastrService
-    )
-    
-    { 
-
-    }
+  ){}
 
   async ngOnInit(): Promise<any> {
 
@@ -64,6 +62,8 @@ export class IndividualComponent implements OnInit {
     const custosCategoria =  await this.getCategoriaCustos(idArea, safra)
 
     const custoMensais = await this.getCustoMensais(idArea, safra)
+   // const consumo = await this.getConsumos()
+
     const itensCusto = await this.getItensCustos(idArea, safra)
 
     Promise.all([infoArea, vendas, custosCategoria, custoMensais, itensCusto]).then(
@@ -305,79 +305,41 @@ export class IndividualComponent implements OnInit {
 
     return  this.individualService.infoArea(id, safra).toPromise()
 
-      // .subscribe(info => {
-      //     this.infoArea = info
-      //     console.log('info 1', this.infoArea)
-      // },
-      // err => {
-      //   this.toastr.error("Falha ao buscar informações da Área", "Error")
-      // }
-      // )
-
-
   }
 
   async getVendas(id: Number, safra: any){
 
     return this.individualService.vendas(id, safra).toPromise();
 
-      // .subscribe(vendas => {
-      //     this.vendas = vendas
-      // },
-      // err => {
-      //   this.toastr.error("Falha ao buscar informações de vendas", "Error")
-      // }
-      // )
-
-
   }
 
   async getCategoriaCustos(id: Number, safra: any){
 
     return this.individualService.custosCategoria(id, safra).toPromise()
-    // .subscribe(custos => {
-    //     this.custosCategoria = custos
-    // },
-    // err => {
-    //   this.toastr.error("Falha ao buscar informações de vendas", "Error")
-    // }
-    // )
-
-
+   
   }
 
   async getCustoMensais(id: Number, safra: any){
 
     return this.individualService.custosMensais(id, safra).toPromise()
 
-    //   .subscribe(custos => {
-    //       this.expensesByMonth = custos
-    //   },
-    //   err => {
-    //     this.toastr.error("Falha ao buscar informações de custos mensais", "Error")
-    //   }
-    // )
-
   }
 
   async getItensCustos(id: Number, safra: any){
 
-    
     return this.individualService.custosItens(id, safra).toPromise()
-    //   .subscribe(custos => {
-    //       this.expensesByItens = custos
-    //   },
-    //   err => {
-    //     this.toastr.error("Falha ao buscar informações de custo por itens", "Error")
-    //   }
-    // )
-
+   
   }
 
-  public getConsumos(){
+  getConsumos(){
 
-    
-  
+    this.comsuptionService.all().toPromise()
+      // .subscribe(consumos => {
+      //   this.consumos = consumos
+      // }, err => {
+
+      // })
+
 
   }
 
