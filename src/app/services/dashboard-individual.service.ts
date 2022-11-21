@@ -33,6 +33,8 @@ export class DashboardIndividualService {
     return this.http.get<any>(`${environment.api_url}/report/area-produtiva/${id}/vendas`, {params});
   }
 
+  
+
 
 
 }

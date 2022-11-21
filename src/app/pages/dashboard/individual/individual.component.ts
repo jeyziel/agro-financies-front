@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CategoriaProduto } from 'src/app/interfaces/dashboard/consumo-categoria';
 import { CustoCategoria } from 'src/app/interfaces/dashboard/custo-categorias';
 import { CustoItem } from 'src/app/interfaces/dashboard/custo-itens';
 import { CustoMensal } from 'src/app/interfaces/dashboard/custo-mensal';
@@ -32,7 +33,10 @@ export class IndividualComponent implements OnInit {
   public indicativos: IndicativoIndividual
   public informacoes_gerais: InformacoesGerais
   public custo_categorias : CustoCategoria[]
-  public custo_mensal: CustoMensal[] 
+  public custo_mensal: CustoMensal[]
+  
+  public consumo_atividade: any[]
+  public consumo_produtos: any[]
 
 
   constructor(
@@ -53,8 +57,6 @@ export class IndividualComponent implements OnInit {
     
   }
 
- 
-
   async allData(idArea: Number, safra){
 
     const infoArea =   await this.getInfoArea(idArea, safra)
@@ -63,10 +65,13 @@ export class IndividualComponent implements OnInit {
 
     const custoMensais = await this.getCustoMensais(idArea, safra)
    // const consumo = await this.getConsumos()
-
     const itensCusto = await this.getItensCustos(idArea, safra)
 
-    Promise.all([infoArea, vendas, custosCategoria, custoMensais, itensCusto]).then(
+    const consumoAtividade = await this.getCategoriaCustos(idArea, safra)
+    const consumoProduto = await this.getConsumoProduto(idArea, safra)
+
+
+    Promise.all([infoArea, vendas, custosCategoria, custoMensais, itensCusto, consumoAtividade, consumoProduto]).then(
       data => {
         
         this.infoArea = data[0]
@@ -80,11 +85,16 @@ export class IndividualComponent implements OnInit {
         this.custo_categorias = this.makeCategoriasCustos(custosCategoria)
         this.itensCustos = this.makeCustoItens(itens)
 
-
         this.custo_mensal = this.makeCustosMensais(custoMensais)
 
+        //this.consumo_atividade = this.makeConsumoAtividade(consumoAtividade)
 
-        console.log(this.custo_mensal)
+
+        console.log('resultado retornado', consumoProduto)
+
+        this.consumo_produtos = this.makeConsumoProduto(consumoProduto)
+
+        //console.log(this.custo_mensal)
 
     
 
@@ -94,11 +104,6 @@ export class IndividualComponent implements OnInit {
         this.toastr.error('Falha ao montar Dashboard! Tente novamente ', 'erro')
       }
     )
-
-  
-
-    
-
   }
 
   public makeIndicativos(infoArea, vendas, categoriasCusto): IndicativoIndividual{
@@ -194,7 +199,6 @@ export class IndividualComponent implements OnInit {
 
     });
 
-    console.log('labels', labels)
 
     return labels
 
@@ -271,6 +275,71 @@ export class IndividualComponent implements OnInit {
 
   }
 
+  public makeConsumoAtividade(atividade){
+
+
+    return []
+
+  }
+
+  public makeConsumoProduto(categories){
+
+    let categoriesProduto: CategoriaProduto[] = []
+
+    categories?.forEach(category => {
+
+      const consumos = []
+
+      category?.consumptions?.forEach(consumo => {
+
+
+        const unit_value = consumo?.unit_value;
+        const quantity = consumo?.quantity;
+        const total =  unit_value * quantity
+  
+        const employees = consumo?.employees;
+        const user = consumo?.users;
+  
+        const consumoProduto = {
+  
+          product_id: consumo?.products?.id,
+          product_name: consumo?.products?.name,
+          unit_name: "",
+          unit_value:  unit_value,
+          quantity: quantity,
+          total: total,
+          employee_name: ( employees?.name || "-"),
+          user_name: ( user?.name || "-"),
+          consumption_at: consumo?.consumption_at,
+  
+        }
+
+
+        consumos.push(consumoProduto)
+
+      });
+
+      categoriesProduto.push(
+        {
+          id: category?.id,
+          name: category?.name,
+          description: category?.description,
+          created_at: category?.created_at,
+          consumptions: consumos
+        }
+      )
+  
+     
+    });
+
+
+    console.log(categoriesProduto)
+    return categoriesProduto;
+    
+
+  }
+
+
   getLabelsCustoMensal(){
 
 
@@ -334,14 +403,22 @@ export class IndividualComponent implements OnInit {
   getConsumos(){
 
     this.comsuptionService.all().toPromise()
-      // .subscribe(consumos => {
-      //   this.consumos = consumos
-      // }, err => {
+    
+  }
 
-      // })
+  getConsumoAtividade(id: Number, safra: any){
 
+    this.comsuptionService.categoriesAtividade(id, safra).toPromise()
 
   }
+
+  getConsumoProduto(id: Number, safra: any){
+
+    return this.comsuptionService.categoriesProduto(id, safra).toPromise()
+
+  }
+
+
 
 
 

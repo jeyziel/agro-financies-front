@@ -16,6 +16,7 @@ import { DoughnutComponent } from './charts/doughnut/doughnut.component';
 import {NgChartsModule} from 'ng2-charts';
 import { ConsumoCategoriaComponent } from './dashboard/tables/consumo-categoria/consumo-categoria.component';
 import { ConsumosComponent } from '../pages/consumos/consumos.component';
+import { ConsumoCategoriaAtividadeComponent } from './dashboard/tables/consumo-categoria-atividade/consumo-categoria-atividade.component';
 
 
 
@@ -39,7 +40,8 @@ import { ConsumosComponent } from '../pages/consumos/consumos.component';
     BarcodeComponent,
     PieComponent,
     DoughnutComponent,
-    ConsumoCategoriaComponent
+    ConsumoCategoriaComponent,
+    ConsumoCategoriaAtividadeComponent
   ],
     exports: [
         FooterComponent,

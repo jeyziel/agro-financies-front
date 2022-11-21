@@ -22,5 +22,17 @@ export class ConsumptionService {
     return this.http.post<any[]>(`${this.api}/consumption`, params);
   }
 
+  public categoriesAtividade(id: Number, params){
+
+    return this.http.get<any>(`${environment.api_url}/task-categories/consumption`, params);
+
+  }
+
+  public categoriesProduto(id: Number, params){
+
+    return this.http.get<any>(`${environment.api_url}/product-categories/consumption`, {params});
+
+  }
+
 
 }

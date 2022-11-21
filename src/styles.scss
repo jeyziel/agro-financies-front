@@ -7,3 +7,10 @@
 @import '~bootstrap/scss/bootstrap';
 
 @import '~ngx-toastr/toastr.css';
+
+//border #e1e1e1
+
+.card, .table-responsive{
+    border: 1px solid #e1e1e1 !important
+}
+

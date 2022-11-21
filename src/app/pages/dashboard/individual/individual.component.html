@@ -2,18 +2,15 @@
     <div class="container-fluid">
       <div class="header-body">
         <!-- Card stats -->
-  
-  
         <div class="row">
   
-          
           <div class="col-xl-3 col-lg-6">
             <div class="card card-stats mb-4 mb-xl-0">
               <div class="card-body">
                 <div class="row">
                   <div class="col">
                     <h5 class="card-title text-uppercase text-muted mb-0">Custo Total</h5>
-                    <span class="h4 font-weight-bold mb-0">R$ {{ indicativos?.custo.valor }}</span>
+                    <span class="h4 font-weight-bold mb-0">{{ ( indicativos?.custo?.valor || 0) | currency:'BRL':true:'1.2-2' }}</span>
                   </div>
                   <div class="col-auto">
                     <div class="icon icon-shape bg-green text-white rounded-circle shadow">
@@ -58,7 +55,7 @@
                 <div class="row">
                   <div class="col">
                     <h5 class="card-title text-uppercase text-muted mb-0">Custo/Meta</h5>
-                    <span class="h4 font-weight-bold mb-0">{{  (indicativos?.custo?.valor / indicativos?.custo?.objetivo) * 100  }}%</span>
+                    <span class="h4 font-weight-bold mb-0">{{  ((indicativos?.custo?.valor / indicativos?.custo?.objetivo) * 100) || 0  }}%</span>
                   </div>
                   <div class="col-auto">
                     <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -68,7 +65,7 @@
                 </div>
                 <p class="mt-3 mb-0 text-muted text-sm">
                   <!-- <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> Meta</span> -->
-                  <span class="text-nowrap"> Meta( R$ {{  indicativos?.custo?.objetivo  }} )</span>
+                  <span class="text-nowrap"> Meta(  {{  ( indicativos?.custo?.objetivo || 0) | currency:'BRL':true:'1.2-2'  }} )</span>
                 </p>
   
               </div>
@@ -91,7 +88,7 @@
                 </div>
                 <p class="mt-3 mb-0 text-muted text-sm">
                   <!-- <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> R$</span> -->
-                  <span class=" mr-2 text-nowrap">R$ {{ indicativos?.producao?.valor }} </span>
+                  <span class=" mr-2 text-nowrap">{{ (indicativos?.producao?.valor || 0) |  currency:'BRL':true:'1.2-2' }} </span>
                 </p>
               </div>
             </div>
@@ -144,10 +141,26 @@
     </div> -->
   
     <div class="row mt-2">
+
+      <h4>Consumo de Produtos</h4>
+
       <div class="col-12">
-        <app-consumo-categoria ></app-consumo-categoria>
+        <app-consumo-categoria 
+          *ngFor="let consumo of consumo_produtos"  
+          [category]="consumo" 
+        >
+        </app-consumo-categoria>
       </div>
     </div>
+
+    <!-- <div class="row mt-2">
+
+      <h4>Consumo de Atividades</h4>
+
+      <div class="col-12">
+        <app-consumo-categoria  [consumos]="consumo_produto" ></app-consumo-categoria>
+      </div>
+    </div> -->
   
    
   </div>

@@ -23,7 +23,7 @@
          {{ area?.name }}
         </td>
         <td>
-         {{ area?.custo?.valor }}
+         {{ area?.custo?.valor | currency:'BRL':true:'1.2-2' }}
         </td>
         <td>
           {{ area?.producao?.quantidade | currency:'BRL':true:'1.2-2'   }}

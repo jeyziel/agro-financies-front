@@ -12,10 +12,10 @@
         <thead class="thead-light">
         <tr>
           <th scope="col">Data</th>
-          <th scope="col">Produto</th>
-          <th scope="col">Unidade</th>
-          <th scope="col">Preço Unit.</th>
+          <th scope="col">Área</th>
+          <th scope="col">Atividade</th>
           <th scope="col">Qtd.</th>
+          <th scope="col">Preço Unit.</th>
           <th scope="col">Total</th>
           <th scope="col">Colaborador</th> 
           <th scope="col">Usuário</th> 
@@ -27,13 +27,13 @@
             {{ consumption?.consumption_at }}
           </td>
           <td>
-            {{ consumption?.product_name }}
+            {{ consumption?.area_name }}
           </td>
           <td>
-            {{ consumption?.unit_name }}
+            {{ consumption?.task_name }}
           </td>
           <td>
-            {{ consumption?.unit_value }}
+            {{ consumption?.price }}
           </td>
           <td>
             {{ consumption?.quantity }}
@@ -55,3 +55,4 @@
     </div>
   </div>
   
+

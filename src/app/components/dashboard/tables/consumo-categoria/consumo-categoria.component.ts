@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ConsumptionService } from 'src/app/services/consumption.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { ConsumptionService } from 'src/app/services/consumption.service';
   styleUrls: ['./consumo-categoria.component.scss']
 })
 export class ConsumoCategoriaComponent implements OnInit {
+
+
+  @Input() category;
 
   constructor(
     private comsuptionService: ConsumptionService
