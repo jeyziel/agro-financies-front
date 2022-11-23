@@ -53,6 +53,7 @@ import { ConsumoCategoriaAtividadeComponent } from './dashboard/tables/consumo-c
         InformacoesGeraisComponent,
         InformacoesDetalhadasComponent,
         ConsumoCategoriaComponent,
+        ConsumoCategoriaAtividadeComponent,
         PieComponent,
         BarcodeComponent
     ]

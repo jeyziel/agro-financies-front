@@ -24,7 +24,7 @@ export class ConsumptionService {
 
   public categoriesAtividade(id: Number, params){
 
-    return this.http.get<any>(`${environment.api_url}/task-categories/consumption`, params);
+    return this.http.get<any>(`${environment.api_url}/task-categories/consumption`, {params});
 
   }
 

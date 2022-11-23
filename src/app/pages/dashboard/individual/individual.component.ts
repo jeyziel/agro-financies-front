@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { CategoriaProduto } from 'src/app/interfaces/dashboard/consumo-categoria';
+import { CategoriaProduto, CategoryTask } from 'src/app/interfaces/dashboard/consumo-categoria';
 import { CustoCategoria } from 'src/app/interfaces/dashboard/custo-categorias';
 import { CustoItem } from 'src/app/interfaces/dashboard/custo-itens';
 import { CustoMensal } from 'src/app/interfaces/dashboard/custo-mensal';
@@ -35,8 +35,8 @@ export class IndividualComponent implements OnInit {
   public custo_categorias : CustoCategoria[]
   public custo_mensal: CustoMensal[]
   
-  public consumo_atividade: any[]
-  public consumo_produtos: any[]
+  public consumo_atividade: CategoryTask[]
+  public consumo_produtos: CategoriaProduto[]
 
 
   constructor(
@@ -67,7 +67,7 @@ export class IndividualComponent implements OnInit {
    // const consumo = await this.getConsumos()
     const itensCusto = await this.getItensCustos(idArea, safra)
 
-    const consumoAtividade = await this.getCategoriaCustos(idArea, safra)
+    const consumoAtividade = await this.getConsumoAtividade(idArea, safra)
     const consumoProduto = await this.getConsumoProduto(idArea, safra)
 
 
@@ -86,13 +86,14 @@ export class IndividualComponent implements OnInit {
         this.itensCustos = this.makeCustoItens(itens)
 
         this.custo_mensal = this.makeCustosMensais(custoMensais)
+        this.consumo_atividade = this.makeConsumoAtividade(consumoAtividade)
 
-        //this.consumo_atividade = this.makeConsumoAtividade(consumoAtividade)
 
-
-        console.log('resultado retornado', consumoProduto)
+        console.log('resultado retornado 1', this.consumo_atividade)
 
         this.consumo_produtos = this.makeConsumoProduto(consumoProduto)
+
+        console.log('resultado retornado 2', this.consumo_produtos)
 
         //console.log(this.custo_mensal)
 
@@ -275,11 +276,59 @@ export class IndividualComponent implements OnInit {
 
   }
 
-  public makeConsumoAtividade(atividade){
+  public makeConsumoAtividade(categories){
+
+    let categoriesTask: CategoryTask[] = []
+
+    categories?.forEach(category => {
+
+      const consumos = []
+
+      category?.consumptions?.forEach(consumo => {
 
 
-    return []
+        const price = consumo?.price;
+        const quantity = consumo?.quantity;
+        const total =  price * quantity
+  
+        const employee = consumo?.employee;
+        const user = consumo?.user;
+  
+        const consumoAtividade = {
+  
+          task_id: consumo?.task?.id,
+          task_name: consumo?.task?.name,
+          area_name: consumo?.productiveArea?.name,
+          price:  price,
+          quantity: quantity,
+          total: total,
+          employee_name: ( employee?.name || "-"),
+          user_name: ( user?.name || "-"),
+          done_at: consumo?.done_at,
+  
+        }
 
+
+        consumos.push(consumoAtividade)
+
+      });
+
+      categoriesTask.push(
+        {
+          id: category?.id,
+          name: category?.name,
+          description: category?.description,
+          created_at: category?.created_at,
+          consumptions: consumos
+        }
+      )
+  
+     
+    });
+
+
+    return categoriesTask;
+    
   }
 
   public makeConsumoProduto(categories){
@@ -297,18 +346,18 @@ export class IndividualComponent implements OnInit {
         const quantity = consumo?.quantity;
         const total =  unit_value * quantity
   
-        const employees = consumo?.employees;
-        const user = consumo?.users;
+        const employee = consumo?.employee;
+        const user = consumo?.user;
   
         const consumoProduto = {
   
-          product_id: consumo?.products?.id,
-          product_name: consumo?.products?.name,
-          unit_name: "",
+          product_id: consumo?.product?.id,
+          product_name: consumo?.product?.name,
+          unit_name: consumo?.product?.unit_name,
           unit_value:  unit_value,
           quantity: quantity,
           total: total,
-          employee_name: ( employees?.name || "-"),
+          employee_name: ( employee?.name || "-"),
           user_name: ( user?.name || "-"),
           consumption_at: consumo?.consumption_at,
   
@@ -333,10 +382,8 @@ export class IndividualComponent implements OnInit {
     });
 
 
-    console.log(categoriesProduto)
     return categoriesProduto;
     
-
   }
 
 
@@ -408,7 +455,7 @@ export class IndividualComponent implements OnInit {
 
   getConsumoAtividade(id: Number, safra: any){
 
-    this.comsuptionService.categoriesAtividade(id, safra).toPromise()
+    return this.comsuptionService.categoriesAtividade(id, safra).toPromise()
 
   }
 

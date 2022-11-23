@@ -24,7 +24,7 @@
         <tbody>
         <tr *ngFor="let consumption of category?.consumptions">
           <td>
-            {{ consumption?.consumption_at }}
+            {{ consumption?.consumption_at |  date: 'dd/MM/yyyy' }}
           </td>
           <td>
             {{ consumption?.product_name }}
@@ -33,19 +33,21 @@
             {{ consumption?.unit_name }}
           </td>
           <td>
-            {{ consumption?.unit_value }}
+            {{ consumption?.unit_value | currency:'BRL':true:'1.2-2' }}
           </td>
           <td>
             {{ consumption?.quantity }}
            </td>
            <td>
-            {{ consumption?.total }}
+            {{ consumption?.total | currency:'BRL':true:'1.2-2' }}
            </td>
-           <td>
-            {{ consumption?.user_name  }}
-           </td>
+          
            <td>
             {{ consumption?.employee_name  }}
+           </td>
+
+           <td>
+            {{ consumption?.user_name  }}
            </td>
   
         </tr>

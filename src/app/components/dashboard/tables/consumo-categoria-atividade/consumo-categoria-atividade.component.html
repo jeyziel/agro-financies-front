@@ -14,8 +14,8 @@
           <th scope="col">Data</th>
           <th scope="col">Área</th>
           <th scope="col">Atividade</th>
-          <th scope="col">Qtd.</th>
           <th scope="col">Preço Unit.</th>
+          <th scope="col">Qtd.</th>
           <th scope="col">Total</th>
           <th scope="col">Colaborador</th> 
           <th scope="col">Usuário</th> 
@@ -24,7 +24,7 @@
         <tbody>
         <tr *ngFor="let consumption of category?.consumptions">
           <td>
-            {{ consumption?.consumption_at }}
+            {{ consumption?.done_at | date: 'dd/MM/yyyy' }}
           </td>
           <td>
             {{ consumption?.area_name }}
@@ -33,20 +33,21 @@
             {{ consumption?.task_name }}
           </td>
           <td>
-            {{ consumption?.price }}
+            {{ consumption?.price | currency:'BRL':true:'1.2-2' }}
           </td>
           <td>
             {{ consumption?.quantity }}
            </td>
            <td>
-            {{ consumption?.total }}
-           </td>
-           <td>
-            {{ consumption?.user_name  }}
+            {{ consumption?.total | currency:'BRL':true:'1.2-2' }}
            </td>
            <td>
             {{ consumption?.employee_name  }}
            </td>
+           <td>
+            {{ consumption?.user_name  }}
+           </td>
+          
   
         </tr>
   
